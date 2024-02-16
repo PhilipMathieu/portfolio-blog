@@ -42,6 +42,8 @@ fragment PageBlogPostFields on PageBlogPost {
       entries {
         block {
           ...RichImageFields
+          ...VideoEmbedFields
+          ...IframeFields
         }
       }
     }

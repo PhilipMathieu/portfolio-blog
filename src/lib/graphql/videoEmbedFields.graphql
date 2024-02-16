@@ -1,0 +1,10 @@
+fragment VideoEmbedFields on ComponentVideoEmbed {
+  __typename
+  sys {
+    id
+  }
+  componentName
+  videoUrl
+  videoTitle
+  videoCaption
+}

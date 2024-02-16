@@ -1,10 +1,10 @@
 import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, Document } from '@contentful/rich-text-types';
 
-import { ArticleImage } from '@src/components/features/article';
-import { ComponentRichImage } from '@src/lib/__generated/sdk';
+import { ArticleImage, ArticleIframe, ArticleVideo } from '@src/components/features/article';
+import { ComponentRichImage, ComponentIframe, ComponentVideoEmbed } from '@src/lib/__generated/sdk';
 
-export type EmbeddedEntryType = ComponentRichImage | null;
+export type EmbeddedEntryType = ComponentRichImage | ComponentIframe | ComponentVideoEmbed;
 
 export interface ContentfulRichTextInterface {
   json: Document;
@@ -21,6 +21,10 @@ export const EmbeddedEntry = (entry: EmbeddedEntryType) => {
   switch (entry?.__typename) {
     case 'ComponentRichImage':
       return <ArticleImage image={entry} />;
+    case 'ComponentIframe':
+      return <ArticleIframe iframe={entry} />;
+    case 'ComponentVideoEmbed':
+      return <ArticleVideo video={entry} />;
     default:
       return null;
   }
@@ -34,7 +38,6 @@ export const contentfulBaseRichTextOptions = ({ links }: ContentfulRichTextInter
       );
 
       if (!entry) return null;
-
       return <EmbeddedEntry {...entry} />;
     },
   },

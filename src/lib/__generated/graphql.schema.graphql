@@ -121,7 +121,7 @@ enum AssetOrder {
 }
 
 """
-To have author-related properties [See type definition](https://app.contentful.com/spaces/nvxmqufxogry/content_types/componentAuthor)
+To have author-related properties [See type definition](https://app.contentful.com/spaces/8k9x98hwy7u6/content_types/componentAuthor)
 """
 type ComponentAuthor implements Entry {
   avatar(locale: String, preview: Boolean): Asset
@@ -163,7 +163,26 @@ input ComponentAuthorFilter {
 
 type ComponentAuthorLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageBlogPostCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): PageBlogPostCollection
+  pageBlogPostCollection(limit: Int = 100, locale: String, order: [ComponentAuthorLinkingCollectionsPageBlogPostCollectionOrder], preview: Boolean, skip: Int = 0): PageBlogPostCollection
+}
+
+enum ComponentAuthorLinkingCollectionsPageBlogPostCollectionOrder {
+  internalName_ASC
+  internalName_DESC
+  publishedDate_ASC
+  publishedDate_DESC
+  slug_ASC
+  slug_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
 }
 
 enum ComponentAuthorOrder {
@@ -182,7 +201,65 @@ enum ComponentAuthorOrder {
 }
 
 """
-To describe an image used in rich text fields [See type definition](https://app.contentful.com/spaces/nvxmqufxogry/content_types/componentRichImage)
+[See type definition](https://app.contentful.com/spaces/8k9x98hwy7u6/content_types/componentIframe)
+"""
+type ComponentIframe implements Entry {
+  componentName(locale: String): String
+  contentfulMetadata: ContentfulMetadata!
+  iframeUrl(locale: String): String
+  linkedFrom(allowedLocales: [String]): ComponentIframeLinkingCollections
+  sys: Sys!
+}
+
+type ComponentIframeCollection {
+  items: [ComponentIframe]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input ComponentIframeFilter {
+  AND: [ComponentIframeFilter]
+  OR: [ComponentIframeFilter]
+  componentName: String
+  componentName_contains: String
+  componentName_exists: Boolean
+  componentName_in: [String]
+  componentName_not: String
+  componentName_not_contains: String
+  componentName_not_in: [String]
+  contentfulMetadata: ContentfulMetadataFilter
+  iframeUrl: String
+  iframeUrl_contains: String
+  iframeUrl_exists: Boolean
+  iframeUrl_in: [String]
+  iframeUrl_not: String
+  iframeUrl_not_contains: String
+  iframeUrl_not_in: [String]
+  sys: SysFilter
+}
+
+type ComponentIframeLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum ComponentIframeOrder {
+  componentName_ASC
+  componentName_DESC
+  iframeUrl_ASC
+  iframeUrl_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
+To describe an image used in rich text fields [See type definition](https://app.contentful.com/spaces/8k9x98hwy7u6/content_types/componentRichImage)
 """
 type ComponentRichImage implements Entry {
   caption(locale: String): String
@@ -248,7 +325,7 @@ enum ComponentRichImageOrder {
 }
 
 """
-To have SEO-related properties to the pages we render [See type definition](https://app.contentful.com/spaces/nvxmqufxogry/content_types/componentSeo)
+To have SEO-related properties to the pages we render [See type definition](https://app.contentful.com/spaces/8k9x98hwy7u6/content_types/componentSeo)
 """
 type ComponentSeo implements Entry {
   canonicalUrl(locale: String): String
@@ -314,8 +391,40 @@ input ComponentSeoFilter {
 
 type ComponentSeoLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageBlogPostCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): PageBlogPostCollection
-  pageLandingCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): PageLandingCollection
+  pageBlogPostCollection(limit: Int = 100, locale: String, order: [ComponentSeoLinkingCollectionsPageBlogPostCollectionOrder], preview: Boolean, skip: Int = 0): PageBlogPostCollection
+  pageLandingCollection(limit: Int = 100, locale: String, order: [ComponentSeoLinkingCollectionsPageLandingCollectionOrder], preview: Boolean, skip: Int = 0): PageLandingCollection
+}
+
+enum ComponentSeoLinkingCollectionsPageBlogPostCollectionOrder {
+  internalName_ASC
+  internalName_DESC
+  publishedDate_ASC
+  publishedDate_DESC
+  slug_ASC
+  slug_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+}
+
+enum ComponentSeoLinkingCollectionsPageLandingCollectionOrder {
+  internalName_ASC
+  internalName_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 enum ComponentSeoOrder {
@@ -337,6 +446,82 @@ enum ComponentSeoOrder {
   sys_publishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
+}
+
+"""
+[See type definition](https://app.contentful.com/spaces/8k9x98hwy7u6/content_types/componentVideoEmbed)
+"""
+type ComponentVideoEmbed implements Entry {
+  componentName(locale: String): String
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): ComponentVideoEmbedLinkingCollections
+  sys: Sys!
+  videoCaption(locale: String): String
+  videoTitle(locale: String): String
+  videoUrl(locale: String): String
+}
+
+type ComponentVideoEmbedCollection {
+  items: [ComponentVideoEmbed]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input ComponentVideoEmbedFilter {
+  AND: [ComponentVideoEmbedFilter]
+  OR: [ComponentVideoEmbedFilter]
+  componentName: String
+  componentName_contains: String
+  componentName_exists: Boolean
+  componentName_in: [String]
+  componentName_not: String
+  componentName_not_contains: String
+  componentName_not_in: [String]
+  contentfulMetadata: ContentfulMetadataFilter
+  sys: SysFilter
+  videoCaption: String
+  videoCaption_contains: String
+  videoCaption_exists: Boolean
+  videoCaption_in: [String]
+  videoCaption_not: String
+  videoCaption_not_contains: String
+  videoCaption_not_in: [String]
+  videoTitle: String
+  videoTitle_contains: String
+  videoTitle_exists: Boolean
+  videoTitle_in: [String]
+  videoTitle_not: String
+  videoTitle_not_contains: String
+  videoTitle_not_in: [String]
+  videoUrl: String
+  videoUrl_contains: String
+  videoUrl_exists: Boolean
+  videoUrl_in: [String]
+  videoUrl_not: String
+  videoUrl_not_contains: String
+  videoUrl_not_in: [String]
+}
+
+type ComponentVideoEmbedLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum ComponentVideoEmbedOrder {
+  componentName_ASC
+  componentName_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  videoTitle_ASC
+  videoTitle_DESC
+  videoUrl_ASC
+  videoUrl_DESC
 }
 
 type ContentfulMetadata {
@@ -543,18 +728,18 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 scalar JSON
 
 """
-To create individual blog posts [See type definition](https://app.contentful.com/spaces/nvxmqufxogry/content_types/pageBlogPost)
+To create individual blog posts [See type definition](https://app.contentful.com/spaces/8k9x98hwy7u6/content_types/pageBlogPost)
 """
 type PageBlogPost implements Entry {
-  author(locale: String, preview: Boolean): ComponentAuthor
+  author(locale: String, preview: Boolean, where: ComponentAuthorFilter): ComponentAuthor
   content(locale: String): PageBlogPostContent
   contentfulMetadata: ContentfulMetadata!
   featuredImage(locale: String, preview: Boolean): Asset
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): PageBlogPostLinkingCollections
   publishedDate(locale: String): DateTime
-  relatedBlogPostsCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): PageBlogPostRelatedBlogPostsCollection
-  seoFields(locale: String, preview: Boolean): ComponentSeo
+  relatedBlogPostsCollection(limit: Int = 100, locale: String, order: [PageBlogPostRelatedBlogPostsCollectionOrder], preview: Boolean, skip: Int = 0, where: PageBlogPostFilter): PageBlogPostRelatedBlogPostsCollection
+  seoFields(locale: String, preview: Boolean, where: ComponentSeoFilter): ComponentSeo
   shortDescription(locale: String): String
   slug(locale: String): String
   sys: Sys!
@@ -587,6 +772,13 @@ type PageBlogPostContentEntries {
 type PageBlogPostContentLinks {
   assets: PageBlogPostContentAssets!
   entries: PageBlogPostContentEntries!
+  resources: PageBlogPostContentResources!
+}
+
+type PageBlogPostContentResources {
+  block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 input PageBlogPostFilter {
@@ -645,8 +837,40 @@ input PageBlogPostFilter {
 
 type PageBlogPostLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageBlogPostCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): PageBlogPostCollection
-  pageLandingCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): PageLandingCollection
+  pageBlogPostCollection(limit: Int = 100, locale: String, order: [PageBlogPostLinkingCollectionsPageBlogPostCollectionOrder], preview: Boolean, skip: Int = 0): PageBlogPostCollection
+  pageLandingCollection(limit: Int = 100, locale: String, order: [PageBlogPostLinkingCollectionsPageLandingCollectionOrder], preview: Boolean, skip: Int = 0): PageLandingCollection
+}
+
+enum PageBlogPostLinkingCollectionsPageBlogPostCollectionOrder {
+  internalName_ASC
+  internalName_DESC
+  publishedDate_ASC
+  publishedDate_DESC
+  slug_ASC
+  slug_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+}
+
+enum PageBlogPostLinkingCollectionsPageLandingCollectionOrder {
+  internalName_ASC
+  internalName_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 enum PageBlogPostOrder {
@@ -675,15 +899,34 @@ type PageBlogPostRelatedBlogPostsCollection {
   total: Int!
 }
 
+enum PageBlogPostRelatedBlogPostsCollectionOrder {
+  internalName_ASC
+  internalName_DESC
+  publishedDate_ASC
+  publishedDate_DESC
+  slug_ASC
+  slug_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+  title_ASC
+  title_DESC
+}
+
 """
-To have an entry point for the app (e.g. Homepage) [See type definition](https://app.contentful.com/spaces/nvxmqufxogry/content_types/pageLanding)
+To have an entry point for the app (e.g. Homepage) [See type definition](https://app.contentful.com/spaces/8k9x98hwy7u6/content_types/pageLanding)
 """
 type PageLanding implements Entry {
   contentfulMetadata: ContentfulMetadata!
-  featuredBlogPost(locale: String, preview: Boolean): PageBlogPost
+  featuredBlogPost(locale: String, preview: Boolean, where: PageBlogPostFilter): PageBlogPost
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): PageLandingLinkingCollections
-  seoFields(locale: String, preview: Boolean): ComponentSeo
+  seoFields(locale: String, preview: Boolean, where: ComponentSeoFilter): ComponentSeo
   sys: Sys!
 }
 
@@ -735,19 +978,34 @@ The 'Quality' type represents quality as whole numeric values between `1` and `1
 scalar Quality
 
 type Query {
+  _node(id: ID!, locale: String, preview: Boolean): _Node
   asset(id: String!, locale: String, preview: Boolean): Asset
   assetCollection(limit: Int = 100, locale: String, order: [AssetOrder], preview: Boolean, skip: Int = 0, where: AssetFilter): AssetCollection
   componentAuthor(id: String!, locale: String, preview: Boolean): ComponentAuthor
   componentAuthorCollection(limit: Int = 100, locale: String, order: [ComponentAuthorOrder], preview: Boolean, skip: Int = 0, where: ComponentAuthorFilter): ComponentAuthorCollection
+  componentIframe(id: String!, locale: String, preview: Boolean): ComponentIframe
+  componentIframeCollection(limit: Int = 100, locale: String, order: [ComponentIframeOrder], preview: Boolean, skip: Int = 0, where: ComponentIframeFilter): ComponentIframeCollection
   componentRichImage(id: String!, locale: String, preview: Boolean): ComponentRichImage
   componentRichImageCollection(limit: Int = 100, locale: String, order: [ComponentRichImageOrder], preview: Boolean, skip: Int = 0, where: ComponentRichImageFilter): ComponentRichImageCollection
   componentSeo(id: String!, locale: String, preview: Boolean): ComponentSeo
   componentSeoCollection(limit: Int = 100, locale: String, order: [ComponentSeoOrder], preview: Boolean, skip: Int = 0, where: ComponentSeoFilter): ComponentSeoCollection
+  componentVideoEmbed(id: String!, locale: String, preview: Boolean): ComponentVideoEmbed
+  componentVideoEmbedCollection(limit: Int = 100, locale: String, order: [ComponentVideoEmbedOrder], preview: Boolean, skip: Int = 0, where: ComponentVideoEmbedFilter): ComponentVideoEmbedCollection
   entryCollection(limit: Int = 100, locale: String, order: [EntryOrder], preview: Boolean, skip: Int = 0, where: EntryFilter): EntryCollection
   pageBlogPost(id: String!, locale: String, preview: Boolean): PageBlogPost
   pageBlogPostCollection(limit: Int = 100, locale: String, order: [PageBlogPostOrder], preview: Boolean, skip: Int = 0, where: PageBlogPostFilter): PageBlogPostCollection
   pageLanding(id: String!, locale: String, preview: Boolean): PageLanding
   pageLandingCollection(limit: Int = 100, locale: String, order: [PageLandingOrder], preview: Boolean, skip: Int = 0, where: PageLandingFilter): PageLandingCollection
+}
+
+type ResourceLink {
+  sys: ResourceSys!
+}
+
+type ResourceSys {
+  linkType: String!
+  type: String!
+  urn: String!
 }
 
 type Sys {
@@ -794,6 +1052,10 @@ input SysFilter {
   publishedVersion_lte: Float
   publishedVersion_not: Float
   publishedVersion_not_in: [Float]
+}
+
+interface _Node {
+  _id: ID!
 }
 
 input cfComponentAuthorNestedFilter {
