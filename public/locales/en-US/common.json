@@ -13,9 +13,8 @@
     "languageDrawer": "Toggle language drawer"
   },
   "footer": {
-    "aboutUs": "about us",
-    "description": "Our company specialises in the development of advanced technologies for a wide range of industries. We use cutting-edge techniques and algorithms to create intelligent systems that can help businesses automate tasks, improve efficiency, and drive innovation.",
-    "powerBy": "Powered by"
+    "aboutUs": "About Me",
+    "description": "I am a data science graduate student at The Roux Institute, Northeastern University's campus in Portland, ME. I am seeking full-time opportunities starting in late spring 2024. To get a sense of my project experience and skills, please refer to my GitHub profile. For a broader sense of my professional experience, connect with me on LinkedIn."
   },
   "notFound": {
     "title": "Page not found",
