@@ -1,8 +1,6 @@
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 
-import BlogLogo from '@icons/blog-logo.svg';
-import { LanguageSelector } from '@src/components/features/language-selector';
 import { Container } from '@src/components/shared/container';
 
 export const Header = () => {
@@ -12,10 +10,9 @@ export const Header = () => {
     <header className="py-5">
       <nav>
         <Container className="flex items-center justify-between">
-          <Link href="/" title={t('common.homepage')}>
-            <BlogLogo />
+          <Link href="/" title={t('common.homepage')} className="">
+            <h1>PEM Blog</h1>
           </Link>
-          <LanguageSelector />
         </Container>
       </nav>
     </header>
