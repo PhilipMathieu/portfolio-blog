@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ef335db3-0aca-4484-8b65-e9a047b2b89d/deploy-status)](https://app.netlify.com/sites/blogphilipmathieu/deploys)
+
 # Contentful Blog Starter Template
 
 A Blog Starter Template powered by Next.js & Contentful, pre-designed with optimized & adjustable pages, components, and data management.
