@@ -15,7 +15,7 @@ export const ArticleIframe = ({ iframe }: ArticleIframeProps) => {
       {...inspectorProps({ fieldId: 'iframeUrl' })}
       className={twMerge('flex flex-col items-center justify-center')}
     >
-      <div className={twMerge('aspect-w-16 aspect-h-9 w-full overflow-hidden rounded-lg')}>
+      <div className={twMerge('aspect-w-1 aspect-h-1 w-full overflow-hidden')}>
         <iframe
           title={iframe.componentName || 'Iframe'}
           src={iframe.iframeUrl}
