@@ -14,7 +14,11 @@ const Page = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { t } = useTranslation();
 
   const blogPost = useContentfulLiveUpdates(props.blogPost);
-  const relatedPosts = blogPost?.relatedBlogPostsCollection?.items;
+  let relatedPosts = blogPost?.relatedBlogPostsCollection?.items;
+  // Set to null if no items
+  if (relatedPosts && !relatedPosts.length) {
+    relatedPosts = null;
+  }
 
   if (!blogPost || !relatedPosts) return null;
 
