@@ -48,7 +48,7 @@ export const contentfulBaseRichTextOptions = ({ links }: ContentfulRichTextInter
       // Check if the whole paragraph is code
       // @ts-ignore
       if (find(node.content[0].marks, mark => mark.type === 'code')) {
-        return <pre>{children}</pre>;
+        return <pre className="prose-code lg:prose-xl">{children}</pre>;
       }
       return <p>{children}</p>;
     },
@@ -59,8 +59,6 @@ export const CtfRichText = ({ json, links }: ContentfulRichTextInterface) => {
   const baseOptions = contentfulBaseRichTextOptions({ links, json });
 
   return (
-    <article className="prose-sm prose max-w-none">
-      {documentToReactComponents(json, baseOptions)}
-    </article>
+    <article className="prose max-w-none">{documentToReactComponents(json, baseOptions)}</article>
   );
 };
