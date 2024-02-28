@@ -46,6 +46,7 @@ export const contentfulBaseRichTextOptions = ({ links }: ContentfulRichTextInter
     },
     [BLOCKS.PARAGRAPH]: (node, children) => {
       // Check if the whole paragraph is code
+      // @ts-ignore
       if (find(node.content[0].marks, mark => mark.type === 'code')) {
         return <pre>{children}</pre>;
       }
