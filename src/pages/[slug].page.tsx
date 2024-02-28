@@ -14,11 +14,7 @@ const Page = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { t } = useTranslation();
 
   const blogPost = useContentfulLiveUpdates(props.blogPost);
-  let relatedPosts = blogPost?.relatedBlogPostsCollection?.items;
-  // Set to null if no items
-  if (relatedPosts && !relatedPosts.length) {
-    relatedPosts = null;
-  }
+  const relatedPosts = blogPost?.relatedBlogPostsCollection?.items;
 
   if (!blogPost || !relatedPosts) return null;
 
@@ -31,7 +27,7 @@ const Page = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
       <Container className="mt-8 max-w-4xl">
         <ArticleContent article={blogPost} />
       </Container>
-      {relatedPosts && (
+      {relatedPosts?.length && (
         <Container className="mt-8 max-w-5xl">
           <h2 className="mb-4 md:mb-6">{t('article.relatedArticles')}</h2>
           <ArticleTileGrid className="md:grid-cols-2" articles={relatedPosts} />
