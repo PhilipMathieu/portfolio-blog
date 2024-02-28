@@ -4,6 +4,10 @@ import { BLOCKS, Document } from '@contentful/rich-text-types';
 import { ArticleImage, ArticleIframe, ArticleVideo } from '@src/components/features/article';
 import { ComponentRichImage, ComponentIframe, ComponentVideoEmbed } from '@src/lib/__generated/sdk';
 
+const find = (array, condition) => {
+  return array.find(item => condition(item));
+};
+
 export type EmbeddedEntryType = ComponentRichImage | ComponentIframe | ComponentVideoEmbed;
 
 export interface ContentfulRichTextInterface {
@@ -40,6 +44,13 @@ export const contentfulBaseRichTextOptions = ({ links }: ContentfulRichTextInter
       if (!entry) return null;
       return <EmbeddedEntry {...entry} />;
     },
+    [BLOCKS.PARAGRAPH]: (node, children) => {
+      // Check if the whole paragraph is code
+      if (find(node.content[0].marks, mark => mark.type === 'code')) {
+        return <pre>{children}</pre>;
+      }
+      return <p>{children}</p>;
+    },
   },
 });
 
@@ -47,7 +58,7 @@ export const CtfRichText = ({ json, links }: ContentfulRichTextInterface) => {
   const baseOptions = contentfulBaseRichTextOptions({ links, json });
 
   return (
-    <article className="prose prose-sm max-w-none">
+    <article className="prose-sm prose max-w-none">
       {documentToReactComponents(json, baseOptions)}
     </article>
   );
