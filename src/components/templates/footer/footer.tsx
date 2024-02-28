@@ -9,8 +9,8 @@ export const Footer = () => {
   return (
     <footer className="border-t-color mt-10 border-t border-gray200">
       <Container className="flex-items-center flex justify-between py-8">
-        <h2 className="h4 mb-4">{t('footer.aboutUs')}</h2>
-        <div className="max-w-4xl">
+        <h2 className="h4 mb-4 px-2">{t('footer.aboutUs')}</h2>
+        <div className="mb-4 max-w-4xl">
           I am a data science graduate student at The Roux Institute, Northeastern University&apos;s
           campus in Portland, ME. I am seeking full-time opportunities starting in late spring 2024.
           To get a sense of my project experience and skills, please refer to{' '}
@@ -23,7 +23,7 @@ export const Footer = () => {
           </a>
           .
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end px-2">
           <SocialIcon
             url="https://github.com/PhilipMathieu"
             className="mr-2"
