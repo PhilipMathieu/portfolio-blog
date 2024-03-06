@@ -80,6 +80,7 @@ module.exports = {
         tighter: 1.1,
       },
       fontFamily: {
+        serif: ['Newsreader', ...fontFamily.serif],
         sans: ['Inter', ...fontFamily.sans],
       },
     },
