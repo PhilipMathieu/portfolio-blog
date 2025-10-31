@@ -6,6 +6,8 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import MermaidInit from '../components/MermaidInit.astro';
+import CopyButtonInit from '../components/CopyButtonInit.astro';
+import ShareButton from '../components/ShareButton.astro';
 import { generateGradient } from '../utils/gradient';
 
 type Props = CollectionEntry<'blog'>['data'];
@@ -15,6 +17,7 @@ const displayTitle = import.meta.env.DEV && draft
     ? `[Draft] ${title}`
     : title;
 const gradient = heroImage ? null : generateGradient(title);
+const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '/about';
 ---
 
 <html lang="en">
@@ -97,6 +100,11 @@ const gradient = heroImage ? null : generateGradient(title);
 			.last-updated-on {
 				font-style: italic;
 			}
+			.share-container {
+				display: flex;
+				justify-content: center;
+				margin-top: 1em;
+			}
 		</style>
 	</head>
 
@@ -124,6 +132,11 @@ const gradient = heroImage ? null : generateGradient(title);
 							}
 						</div>
 						<h1>{displayTitle}</h1>
+						{!isAboutPage && (
+							<div class="share-container">
+								<ShareButton title={displayTitle} />
+							</div>
+						)}
 						<hr />
 					</div>
 					<slot />
@@ -132,5 +145,6 @@ const gradient = heroImage ? null : generateGradient(title);
 		</main>
 		<Footer />
 		<MermaidInit />
+		<CopyButtonInit />
 	</body>
 </html>

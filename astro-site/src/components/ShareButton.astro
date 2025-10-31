@@ -1,0 +1,122 @@
+---
+interface Props {
+	title: string;
+	url?: string;
+}
+
+const { title, url } = Astro.props;
+const shareUrl = url || Astro.url.href;
+---
+
+<button class="share-button" type="button" aria-label="Share this article" data-url={shareUrl} data-title={title}>
+	<span class="sr-only">Share</span>
+	<svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+		<path d="M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+		<path d="M6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+		<path d="M18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+		<path d="M8.59 13.51l6.83 3.98"></path>
+		<path d="M15.41 6.51l-6.82 3.98"></path>
+	</svg>
+	<span class="share-text">Share</span>
+</button>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const shareButtons = document.querySelectorAll('.share-button');
+		
+		shareButtons.forEach((shareButton) => {
+			shareButton.addEventListener('click', async () => {
+				const shareUrl = shareButton.dataset.url || window.location.href;
+				const shareTitle = shareButton.dataset.title || document.title;
+
+				// Try Web Share API first (mobile)
+				if (navigator.share) {
+					try {
+						await navigator.share({
+							title: shareTitle,
+							url: shareUrl,
+						});
+						return;
+					} catch (err) {
+						// User cancelled or error occurred, fall through to clipboard
+						if (err instanceof Error && err.name !== 'AbortError') {
+							console.error('Error sharing:', err);
+						}
+					}
+				}
+
+				// Fallback to clipboard
+				try {
+					await navigator.clipboard.writeText(shareUrl);
+					const shareText = shareButton.querySelector('.share-text');
+					const originalText = shareText?.textContent || 'Share';
+					if (shareText) {
+						shareText.textContent = 'Copied!';
+						setTimeout(() => {
+							shareText.textContent = originalText;
+						}, 2000);
+					}
+				} catch (err) {
+					console.error('Failed to copy to clipboard:', err);
+					// Fallback for older browsers
+					const textArea = document.createElement('textarea');
+					textArea.value = shareUrl;
+					textArea.style.position = 'fixed';
+					textArea.style.opacity = '0';
+					document.body.appendChild(textArea);
+					textArea.select();
+					try {
+						document.execCommand('copy');
+						const shareText = shareButton.querySelector('.share-text');
+						if (shareText) {
+							const originalText = shareText.textContent || 'Share';
+							shareText.textContent = 'Copied!';
+							setTimeout(() => {
+								shareText.textContent = originalText;
+							}, 2000);
+						}
+					} catch (fallbackErr) {
+						console.error('Fallback copy failed:', fallbackErr);
+					}
+					document.body.removeChild(textArea);
+				}
+			});
+		});
+	});
+</script>
+
+<style>
+	.share-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		background-color: var(--color-gray-200);
+		border: 2px solid var(--color-gray-800);
+		color: var(--color-gray-800);
+		font-family: var(--font-family-sans);
+		font-size: 0.875rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+		text-decoration: none;
+	}
+
+	.share-button:hover {
+		background-color: var(--color-gray-300);
+		text-decoration: none;
+	}
+
+	.share-button:active {
+		background-color: var(--color-gray-400);
+	}
+
+	.share-button svg {
+		flex-shrink: 0;
+	}
+
+	.share-text {
+		line-height: 1;
+	}
+</style>
+
