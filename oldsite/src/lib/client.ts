@@ -1,7 +1,7 @@
 import { GraphQLClient } from 'graphql-request';
 
 import { getSdk } from 'oldsite/src/lib/__generated/sdk';
-import { endpoint } from 'codegen';
+import { endpoint } from 'oldsite/codegen';
 
 const graphQlClient = new GraphQLClient(endpoint, {
   headers: {
