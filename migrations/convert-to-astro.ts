@@ -127,15 +127,15 @@ function richTextToMarkdown(
     
     case 'unordered-list':
       const ulItems = content?.map(c => richTextToMarkdown(c, embeddedEntries, assets, locale)).filter(Boolean) || [];
-      return `${ulItems.join('')}\n`;
+      return ulItems.map(item => `- ${item.trim()}`).join('\n') + '\n\n';
     
     case 'ordered-list':
-      const olItems = content?.map((c, i) => `${i + 1}. ${richTextToMarkdown(c, embeddedEntries, assets, locale)}`).filter(Boolean) || [];
-      return `${olItems.join('')}\n\n`;
+      const olItems = content?.map(c => richTextToMarkdown(c, embeddedEntries, assets, locale)).filter(Boolean) || [];
+      return olItems.map((item, i) => `${i + 1}. ${item.trim()}`).join('\n') + '\n\n';
     
     case 'list-item':
       const itemContent = content?.map(c => richTextToMarkdown(c, embeddedEntries, assets, locale)).join('').trim();
-      return `- ${itemContent}\n`;
+      return itemContent;
     
     case 'blockquote':
       const quoteContent = content?.map(c => richTextToMarkdown(c, embeddedEntries, assets, locale)).join('').trim();
