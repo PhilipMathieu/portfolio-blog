@@ -1,0 +1,193 @@
+---
+import Layout from '../layouts/BlogPost.astro';
+---
+
+<Layout
+	title="Colophon"
+	description="A technical overview of the technologies and tools used to build this site, written for intermediate programmers."
+	pubDate={new Date('2025-01-20')}
+>
+	<p>
+		This site is built using modern web technologies chosen for performance, developer experience, and maintainability. Below is an overview of the core technologies and how they work together.
+	</p>
+
+	<h2>Framework & Build Tools</h2>
+
+	<h3>Astro</h3>
+
+	<p>
+		<a href="https://astro.build/" target="_blank">Astro</a> is the static site generator powering this site. Astro uses a component-based architecture similar to React, but by default ships zero JavaScript to the client, resulting in extremely fast page loads.
+	</p>
+
+	<p>
+		During the build process, Astro compiles <code>.astro</code> components into static HTML. Components can be written in TypeScript and use familiar JSX-like syntax for templating. Astro also supports content collections—structured ways to organize markdown files with type-safe frontmatter.
+	</p>
+
+	<p>
+		The site uses <strong>Astro 5.x</strong> with static site generation (<code>output: 'static'</code>), meaning all pages are pre-rendered at build time rather than on-demand.
+	</p>
+
+	<h3>Vite</h3>
+
+	<p>
+		Astro uses <a href="https://vitejs.dev/" target="_blank">Vite</a> under the hood as its build tool. Vite provides fast development server startup and Hot Module Replacement (HMR) during development. It uses native ES modules and modern bundling techniques for optimal production builds.
+	</p>
+
+	<h3>TypeScript</h3>
+
+	<p>
+		The entire codebase is written in <a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>, providing type safety and better developer experience through autocomplete and compile-time error checking. Astro has excellent TypeScript support out of the box, including type-safe content collections.
+	</p>
+
+	<h2>Styling</h2>
+
+	<h3>Tailwind CSS</h3>
+
+	<p>
+		This site uses <a href="https://tailwindcss.com/" target="_blank">Tailwind CSS 4.x</a> for styling, configured via the <code>@tailwindcss/vite</code> plugin. Tailwind is a utility-first CSS framework that allows rapid UI development through composition of utility classes rather than writing custom CSS.
+	</p>
+
+	<p>
+		The site uses a custom Tailwind theme defined in <code>global.css</code> with:
+	</p>
+
+	<ul>
+		<li>Custom color palette (grays and blue accent)</li>
+		<li>Custom font families (Inter for sans-serif, Newsreader for serif)</li>
+		<li>Design tokens for shadows and spacing</li>
+	</ul>
+
+	<h2>Content & Markdown Processing</h2>
+
+	<h3>MDX</h3>
+
+	<p>
+		<a href="https://mdxjs.com/" target="_blank">MDX</a> allows writing JSX/React components within Markdown documents. The site uses <code>@astrojs/mdx</code> to process blog posts written in MDX, enabling rich content authoring while maintaining the simplicity of Markdown.
+	</p>
+
+	<h3>Rehype & Remark Plugins</h3>
+
+	<p>
+		The site uses the <a href="https://unifiedjs.com/" target="_blank">unified</a> ecosystem (specifically <a href="https://github.com/rehypejs/rehype" target="_blank">rehype</a> and <a href="https://github.com/remarkjs/remark" target="_blank">remark</a>) to process and transform Markdown/MDX during build time.
+	</p>
+
+	<p>
+		<strong>Custom Rehype Plugin</strong>: A custom <code>rehypeIframe</code> plugin transforms <code>&lt;iframe&gt;</code> elements in markdown content:
+	</p>
+
+	<ul>
+		<li>Wraps iframes in responsive containers</li>
+		<li>Handles mobile compatibility (detects and defers loading of mobile-incompatible embeds)</li>
+		<li>Adds lazy loading and accessibility attributes</li>
+	</ul>
+
+	<p>
+		<strong>Mermaid Support</strong>: The site supports <a href="https://mermaid.js.org/" target="_blank">Mermaid</a> diagrams rendered client-side. Mermaid diagrams can be embedded in markdown using code fences with the <code>mermaid</code> language identifier.
+	</p>
+
+	<h3>Content Collections</h3>
+
+	<p>
+		Astro's content collections feature provides type-safe access to markdown files. Blog posts are defined as a collection in <code>content.config.ts</code> with a Zod schema that validates frontmatter fields (title, description, publication date, etc.).
+	</p>
+
+	<h2>Deployment & Hosting</h2>
+
+	<h3>Cloudflare Pages</h3>
+
+	<p>
+		The site is deployed on <a href="https://pages.cloudflare.com/" target="_blank">Cloudflare Pages</a>, which provides:
+	</p>
+
+	<ul>
+		<li>Automatic deployments from Git</li>
+		<li>Global CDN distribution</li>
+		<li>Built-in support for Astro</li>
+		<li>Fast edge computing capabilities</li>
+	</ul>
+
+	<p>
+		The <code>@astrojs/cloudflare</code> adapter is configured but not actively used since the site uses static generation. The adapter would be needed if using Cloudflare-specific features like Workers or Durable Objects.
+	</p>
+
+	<h3>Static Site Generation</h3>
+
+	<p>
+		All pages are pre-rendered during the build process, resulting in static HTML, CSS, and minimal JavaScript. This approach provides:
+	</p>
+
+	<ul>
+		<li>Fast initial page loads</li>
+		<li>Better SEO (content is immediately available to crawlers)</li>
+		<li>Lower hosting costs</li>
+		<li>Resilience to traffic spikes</li>
+	</ul>
+
+	<h2>Image Processing</h2>
+
+	<h3>Sharp</h3>
+
+	<p>
+		<a href="https://sharp.pixelplumbing.com/" target="_blank">Sharp</a> is used for image optimization during the build process. Astro's built-in <code>&lt;Image /&gt;</code> component uses Sharp to:
+	</p>
+
+	<ul>
+		<li>Generate multiple image sizes for responsive images</li>
+		<li>Optimize image formats (WebP, AVIF when supported)</li>
+		<li>Resize images efficiently</li>
+	</ul>
+
+	<h2>Development & Testing</h2>
+
+	<h3>Playwright</h3>
+
+	<p>
+		<a href="https://playwright.dev/" target="_blank">Playwright</a> is configured for end-to-end testing. While the site is primarily static, Playwright can test interactions, accessibility, and responsive behavior across different browsers.
+	</p>
+
+	<h2>Fonts & Typography</h2>
+
+	<p>
+		The site uses two Google Fonts:
+	</p>
+
+	<ul>
+		<li><strong>Inter</strong>: Sans-serif font for body text and UI elements</li>
+		<li><strong>Newsreader</strong>: Serif font for headings and content where serif styling is desired</li>
+	</ul>
+
+	<p>
+		Fonts are loaded with <code>display=swap</code> to prevent invisible text during font load (FOIT).
+	</p>
+
+	<h2>Build Process Summary</h2>
+
+	<ol>
+		<li><strong>Content</strong>: Markdown/MDX files in <code>src/content/blog/</code> are organized as content collections</li>
+		<li><strong>Processing</strong>: Rehype/Remark plugins transform markdown (iframe handling, directive processing)</li>
+		<li><strong>Compilation</strong>: Astro compiles <code>.astro</code> components and pages into static HTML</li>
+		<li><strong>Styling</strong>: Tailwind CSS generates utility classes, custom CSS is bundled</li>
+		<li><strong>Optimization</strong>: Images are processed, HTML is minified</li>
+		<li><strong>Output</strong>: Static files are generated in <code>dist/</code> directory</li>
+		<li><strong>Deployment</strong>: Cloudflare Pages serves the static files globally via CDN</li>
+	</ol>
+
+	<h2>Performance Considerations</h2>
+
+	<p>
+		Several design decisions contribute to the site's performance:
+	</p>
+
+	<ul>
+		<li><strong>Zero JS by default</strong>: Pages ship no JavaScript unless explicitly needed (e.g., for Mermaid diagrams)</li>
+		<li><strong>Static generation</strong>: All pages are pre-rendered, eliminating server processing time</li>
+		<li><strong>Image optimization</strong>: Responsive images with modern formats reduce bandwidth</li>
+		<li><strong>Lazy loading</strong>: Iframes and images load only when needed</li>
+		<li><strong>CDN distribution</strong>: Cloudflare's global network serves content from locations close to users</li>
+	</ul>
+
+	<p>
+		This architecture prioritizes performance and simplicity while maintaining flexibility for rich content and interactive features where needed.
+	</p>
+</Layout>
+

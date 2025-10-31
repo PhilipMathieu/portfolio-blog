@@ -7,12 +7,13 @@ import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 // Mermaid handled client-side; no rehype plugin needed
+// Iframe handling is done client-side in BlogPost.astro
 
 // https://astro.build/config
 export default defineConfig({
   output: 'static',
   adapter: cloudflare(),
-  site: 'https://example.com',
+  site: 'https://philipmathieu.com',
   integrations: [
     mdx({}),
     sitemap(),
