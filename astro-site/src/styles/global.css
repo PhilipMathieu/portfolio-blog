@@ -228,3 +228,51 @@ hr {
 .prose .mermaid {
 	max-width: 100%;
 }
+
+/* Copy button styling */
+.copy-button-wrapper {
+	position: relative;
+	display: block;
+	width: 100%;
+	margin: 0;
+}
+
+.copy-button-wrapper pre,
+.copy-button-wrapper blockquote {
+	margin: 0;
+}
+
+.copy-button {
+	position: absolute;
+	top: 0.75rem;
+	right: 0.75rem;
+	padding: 0.5rem 0.75rem;
+	background-color: var(--color-gray-300);
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.875rem;
+	color: var(--color-gray-800);
+	font-family: var(--font-family-sans);
+	transition: background-color 0.2s ease, color 0.2s ease;
+	z-index: 10;
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	opacity: 0.9;
+	pointer-events: auto;
+}
+
+.copy-button:hover {
+	background-color: var(--color-gray-400);
+	opacity: 1;
+}
+
+.copy-button:active {
+	background-color: var(--color-gray-500);
+}
+
+.copy-button.copied {
+	background-color: var(--color-blue-500);
+	color: white;
+}

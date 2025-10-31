@@ -1,0 +1,99 @@
+---
+---
+<script>
+  const initCopyButtons = () => {
+    // Add copy buttons to code blocks (pre elements)
+    const codeBlocks = document.querySelectorAll('.prose pre');
+    codeBlocks.forEach((pre) => {
+      // Skip if already wrapped or is a mermaid diagram
+      if (pre.closest('.copy-button-wrapper') || pre.querySelector('.mermaid')) {
+        return;
+      }
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'copy-button-wrapper';
+      pre.parentNode?.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      const button = document.createElement('button');
+      button.className = 'copy-button';
+      button.setAttribute('aria-label', 'Copy code');
+      button.textContent = 'Copy';
+      wrapper.appendChild(button);
+
+      const code = pre.querySelector('code');
+      const textToCopy = code ? code.textContent || pre.textContent || '' : pre.textContent || '';
+
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+          button.textContent = 'Copied!';
+          button.classList.add('copied');
+          setTimeout(() => {
+            button.textContent = 'Copy';
+            button.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy text:', err);
+          button.textContent = 'Failed';
+          setTimeout(() => {
+            button.textContent = 'Copy';
+          }, 2000);
+        }
+      });
+    });
+
+    // Add copy buttons to block quotes
+    const blockQuotes = document.querySelectorAll('.prose blockquote');
+    blockQuotes.forEach((blockquote) => {
+      // Skip if already wrapped
+      if (blockquote.closest('.copy-button-wrapper')) {
+        return;
+      }
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'copy-button-wrapper';
+      blockquote.parentNode?.insertBefore(wrapper, blockquote);
+      wrapper.appendChild(blockquote);
+
+      const button = document.createElement('button');
+      button.className = 'copy-button';
+      button.setAttribute('aria-label', 'Copy quote');
+      button.textContent = 'Copy';
+      wrapper.appendChild(button);
+
+      const textToCopy = blockquote.textContent || '';
+
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+          button.textContent = 'Copied!';
+          button.classList.add('copied');
+          setTimeout(() => {
+            button.textContent = 'Copy';
+            button.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy text:', err);
+          button.textContent = 'Failed';
+          setTimeout(() => {
+            button.textContent = 'Copy';
+          }, 2000);
+        }
+      });
+    });
+  };
+
+  // Wait a bit to ensure Mermaid processing is done
+  const runInit = () => {
+    // Use setTimeout to ensure Mermaid processing has completed
+    setTimeout(initCopyButtons, 100);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runInit);
+  } else {
+    runInit();
+  }
+</script>
+
