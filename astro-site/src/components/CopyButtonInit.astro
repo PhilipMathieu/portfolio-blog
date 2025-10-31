@@ -42,46 +42,6 @@
         }
       });
     });
-
-    // Add copy buttons to block quotes
-    const blockQuotes = document.querySelectorAll('.prose blockquote');
-    blockQuotes.forEach((blockquote) => {
-      // Skip if already wrapped
-      if (blockquote.closest('.copy-button-wrapper')) {
-        return;
-      }
-
-      const wrapper = document.createElement('div');
-      wrapper.className = 'copy-button-wrapper';
-      blockquote.parentNode?.insertBefore(wrapper, blockquote);
-      wrapper.appendChild(blockquote);
-
-      const button = document.createElement('button');
-      button.className = 'copy-button';
-      button.setAttribute('aria-label', 'Copy quote');
-      button.textContent = 'Copy';
-      wrapper.appendChild(button);
-
-      const textToCopy = blockquote.textContent || '';
-
-      button.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(textToCopy);
-          button.textContent = 'Copied!';
-          button.classList.add('copied');
-          setTimeout(() => {
-            button.textContent = 'Copy';
-            button.classList.remove('copied');
-          }, 2000);
-        } catch (err) {
-          console.error('Failed to copy text:', err);
-          button.textContent = 'Failed';
-          setTimeout(() => {
-            button.textContent = 'Copy';
-          }, 2000);
-        }
-      });
-    });
   };
 
   // Wait a bit to ensure Mermaid processing is done
