@@ -1,0 +1,33 @@
+---
+---
+<script>
+  import mermaid from 'mermaid';
+
+  // Initialize Mermaid without auto-run; we will convert code blocks first
+  mermaid.initialize({ startOnLoad: false, securityLevel: 'loose', theme: 'default' });
+
+  const transformCodeBlocksToMermaid = () => {
+    const codeBlocks = document.querySelectorAll('pre[data-language="mermaid"] > code, pre > code.language-mermaid, pre > code.lang-mermaid');
+    codeBlocks.forEach((code) => {
+      const pre = code.parentElement;
+      if (!pre) return;
+      const graphDefinition = code.textContent || '';
+      const container = document.createElement('div');
+      container.className = 'mermaid';
+      container.textContent = graphDefinition;
+      pre.replaceWith(container);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      transformCodeBlocksToMermaid();
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  } else {
+    transformCodeBlocksToMermaid();
+    mermaid.run({ querySelector: '.mermaid' });
+  }
+</script>
+
+

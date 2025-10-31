@@ -1,0 +1,230 @@
+/*
+  Adapted to match the styling of philipmathieu.com
+ */
+
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* stylelint-disable-next-line at-rule-no-unknown */
+@theme {
+	/* Gray color palette */
+	--color-gray-100: #F7F7F7;
+	--color-gray-200: #E5E5E5;
+	--color-gray-300: #CCCCCC;
+	--color-gray-500: #666666;
+	--color-gray-600: #4A4A4A;
+	--color-gray-800: #1A1A1A;
+	
+	/* Blue accent color */
+	--color-blue-500: #1D9ACC;
+	
+	/* Font families - configured for Tailwind utilities */
+	--font-family-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--font-family-serif: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+	
+	/* Max width */
+	--max-width-8xl: 90rem;
+	
+	/* Box shadows */
+	--shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+:root {
+	/* Legacy CSS variables for compatibility */
+	--gray-100: #F7F7F7;
+	--gray-200: #E5E5E5;
+	--gray-300: #CCCCCC;
+	--gray-500: #666666;
+	--gray-600: #4A4A4A;
+	--gray-800: #1A1A1A;
+	--blue-500: #1D9ACC;
+	--box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	--box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	
+	/* Font family variables */
+	--font-family-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--font-family-serif: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+body {
+	font-family: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	background: var(--color-gray-100);
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	color: var(--color-gray-800);
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+main {
+	max-width: var(--max-width-8xl);
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+h1,
+.h1 {
+	margin: 0;
+	color: var(--color-gray-800);
+	font-family: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+	font-size: 2.5rem;
+	font-weight: 600;
+	line-height: 1.1;
+}
+
+h2,
+.h2 {
+	margin: 0;
+	color: var(--color-gray-800);
+	font-family: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+	font-size: 1.75rem;
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+h3,
+.h3 {
+	margin: 0;
+	color: var(--color-gray-800);
+	font-family: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+	font-size: 1.25rem;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+h4,
+.h4 {
+	margin: 0;
+	color: var(--color-gray-800);
+	font-family: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+h5,
+h6 {
+	margin: 0;
+	color: var(--color-gray-800);
+	font-family: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+	font-weight: 600;
+}
+strong,
+b {
+	font-weight: 700;
+}
+
+a {
+	color: var(--color-blue-500);
+	text-decoration: none;
+}
+
+a:hover {
+	color: var(--color-blue-500);
+	text-decoration: underline;
+}
+
+p {
+	margin: 0 0 1rem 0;
+	color: var(--color-gray-600);
+	letter-spacing: -0.011em;
+	line-height: 1.5;
+}
+
+.prose p {
+	margin-bottom: 2rem;
+}
+textarea {
+	width: 100%;
+	font-size: 16px;
+}
+input {
+	font-size: 16px;
+}
+table {
+	width: 100%;
+}
+img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 0;
+}
+
+code {
+	padding: 2px 5px;
+	background-color: var(--color-gray-200);
+	border-radius: 2px;
+	font-family: monospace;
+}
+
+pre {
+	padding: 1.5em;
+	background-color: var(--color-gray-200);
+	border-radius: 8px;
+}
+
+pre > code {
+	all: unset;
+	background: none;
+	padding: 0;
+}
+
+blockquote {
+	border-left: 4px solid var(--color-blue-500);
+	padding: 0 0 0 20px;
+	margin: 0;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid var(--color-gray-200);
+	margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+	h1,
+	.h1 {
+		font-size: 1.5rem;
+	}
+	
+	h2,
+	.h2 {
+		font-size: 1.25rem;
+	}
+}
+
+.sr-only {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
+	clip: rect(1px 1px 1px 1px);
+	/* maybe deprecated but we need to support legacy browsers */
+	clip: rect(1px, 1px, 1px, 1px);
+	/* modern browsers, clip-path works inwards from each corner */
+	clip-path: inset(50%);
+	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
+	white-space: nowrap;
+}
+
+/* Mermaid diagram styling */
+.mermaid {
+	background-color: var(--color-gray-100);
+	border-radius: 8px;
+	padding: 1.5em;
+	margin: 1.5em 0;
+	overflow-x: auto;
+	text-align: center;
+}
+
+.prose .mermaid {
+	max-width: 100%;
+}

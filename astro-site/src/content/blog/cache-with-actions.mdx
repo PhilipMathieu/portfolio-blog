@@ -1,0 +1,51 @@
+---
+title: 'Cache-with-Actions: GitHub Template for "Patching" Unreliable APIs'
+description: ''
+pubDate: 'Feb 18, 2024'
+heroImage: '/assets/WUVV5bVWP2.png'
+draft: false
+updatedDate: 'Feb 29, 2024'
+---
+
+Most of the time APIs are great, but when they occasionally fail, all sorts of problems occur. In the fall of 2022, I worked on a data visualization project that required two different API calls: one to a database of crowd-sourced air quality reports, and one to a NOAA weather endpoint to enrich the reports with weather data. We quickly learned that while the former API could be relied upon to function any time the page was refreshed, the latter would periodically drop out.
+
+In a real-world production system, you probably wouldn't want to rely on an API to return correctly at all, but for a one-off class project, we needed a simple solution. After a bit of experimenting, I landed on a simple and free strategy using a few key components:
+
+- A config file to set the URL for the request
+- A pure Python script to make the API request and write the output to a local directory
+- A GitHub workflow to run the script and merge changes directly into the repo
+
+For those that aren't familiar, [GitHub Actions](https://github.com/features/actions) is a serverless automation tool built into GitHub that allows you to orchestrate anything from [publishing a project](https://github.com/marketplace/actions/pypi-publish) to [deploying a static website](https://github.blog/2022-08-10-github-pages-now-uses-actions-by-default/). **Importantly, it's free for public repositories.**
+
+All of the core functionality is accomplished through the workflow file. Let's break it down:
+
+`name: Python Script
+
+on:
+  schedule: 
+  - cron: "0 10 * * *"
+  workflow_dispatch:
+
+`
+
+The first part of the script specifies when the workflow should run. This script runs every day at 10 UTC and also whenever the workflow is manually dispatched. (Other common options include running on pushes or pull requests.)
+
+`jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write`
+
+The next section specifies how to run the job. There is a lot of flexibility here, but for our purposes all we need to do is tell it to use a Linux job runner with Ubuntu, and give it write access to our repo.
+
+`    steps:
+    - uses: actions/checkout@v3
+    - name: Update json
+      run: python -B main.py
+    # Commit all changed files back to the repository
+    - uses: stefanzweifel/git-auto-commit-action@v4`
+
+Here's the important part. We start with checkout (i.e. getting the content of the repo - that's not automatically in the working directory), then run the script. The last step commits the results to the repo.
+

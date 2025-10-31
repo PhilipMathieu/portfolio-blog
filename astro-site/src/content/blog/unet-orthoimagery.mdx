@@ -1,0 +1,33 @@
+---
+title: 'Using Computer Vision to Accelerate Invasive Plant Monitoring'
+description: ''
+pubDate: 'Apr 26, 2023'
+heroImage: '/assets/test_set_output.png'
+draft: false
+updatedDate: 'Feb 16, 2024'
+---
+
+The field of remote sensing - that is, using satellites to take images of the earth or other planets - has existed since the eighties. Until relatively recently the ability to actually work with the massive images produced by these satellites has been the domain of government agencies and university research groups, largely constrained by the need for computers capable of running intense computations over massive amounts of data. In 2023, many of these barriers are beginning to fall, making the techniques of remote sensing and computer vision accessible to a wider audience.
+
+![Fallopia japonica growing near my home. The photo was taken in late April, roughly the same time of year that the images for this project were taken.](/assets/knotweed_spring.jpg "Fallopia japonica growing near my home. The photo was taken in late April, roughly the same time of year that the images for this project were taken.")
+
+In this project, I collaborated with classmates James Kim and Jack Ning to develop a machine learning algorithm to detect and map invasive plant species in Cape Elizabeth, ME. The idea for the project came from my time working at the Cape Elizabeth Land Trust, where I frequently referenced aerial images as a quick way to see what our properties looked like and where different types of plants were growing. We decided to focus on one particular species, *Fallopia japonica*, for a couple of key reasons:
+
+- It tends to grow in dense monocultures [[source](https://extension.umaine.edu/publications/wp-content/uploads/sites/52/2015/04/2511.pdf)], which could make it easier to identify in aerial images,
+- It is considered one of the 125 species of plants "found to pose a threat to habitats and natural resources in Maine" [[source](https://www.maine.gov/dacf/mnap/features/invasive_plants/2019advisorylist_sciname.pdf)], and
+- I know where enough colonies are in Cape Elizabeth to generate a labelled dataset for the analysis.
+
+Our initial research and class experience led us to select a U-Net convolutional neural network (CNN) as the means of finding and identifying the areas within the image containing *Fallopia japonica*. A CNN is a type of machine learning model that processes a rectangular "tile" of pixels all at once, allowing it to take advantage of not just the colors of each pixel but the spatial relationships of and variations in brightness, hue, and saturation, collectively referred to as "texture." 
+
+![U-Net Architecture](/assets/U_net.png "U-Net Architecture")
+
+The U-Net architecture specifically performs a series of downsampling steps (i.e., creating lower-resolution overviews of the previous image) followed by a series of upsampling steps (i.e., creating high-resolution images from a lower-resolution overview) to "transform" the original image into a mask that labels each pixel as either containing or not containing *Fallopia japonica*.
+
+![Examples of segmentation on the test set, a section of the aerial image showing Kettle Cove. The original image is on the left, the "true" mask is in the center, and the predicted mask is on the right.](/assets/test_set_output.png "Examples of segmentation on the test set, a section of the aerial image showing Kettle Cove. The original image is on the left, the "true" mask is in the center, and the predicted mask is on the right.")
+
+The complete details of the project, including things like hyperparameter tuning, data preprocessing, etc. are written up in the [final report](https://github.com/PhilipMathieu/unet-orthoimagery/blob/main/Final%20Project%20Report.pdf) hosted on the [project GitHub site](https://github.com/PhilipMathieu/unet-orthoimagery).  We also put together a basic web map viewer that shows the original imagery as well as the training and test sets and results.
+
+<iframe src="https://pmathieu.maps.arcgis.com/apps/instant/imageryviewer/index.html?appid=1d0485855e0a4505a2ed2f4620767c9b&locale=en"></iframe>
+Last but not least, to hear our team explain the project in detail, check out the link below:
+
+<iframe src="https://www.youtube.com/embed/7JHhMM3SsUo?si=5m2JCDWzpDYnOdN6" title="" allowfullscreen></iframe>

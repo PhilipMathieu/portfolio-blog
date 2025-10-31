@@ -1,8 +1,0 @@
-fragment IframeFields on ComponentIframe {
-  __typename
-  sys {
-    id
-  }
-  componentName
-  iframeUrl
-}
