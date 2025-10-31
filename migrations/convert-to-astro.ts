@@ -209,17 +209,6 @@ function richTextToMarkdown(
       }
       return text;
     
-    case 'code':
-      // Handle code blocks - convert to fenced code blocks
-      const codeContent = content?.map(c => {
-        if (c.nodeType === 'text') {
-          return c.value || '';
-        }
-        return richTextToMarkdown(c, embeddedEntries, assets, locale);
-      }).join('') || '';
-      const language = data?.target?.sys?.id || '';
-      return `\`\`\`${language}\n${codeContent}\n\`\`\`\n\n`;
-    
     default:
       console.warn(`Unhandled node type: ${nodeType}`);
       return content?.map(c => richTextToMarkdown(c, embeddedEntries, assets, locale)).join('') || '';
