@@ -3,7 +3,7 @@ title: 'Cache-with-Actions: GitHub Template for "Patching" Unreliable APIs'
 description: ''
 pubDate: 'Feb 18, 2024'
 heroImage: '/assets/WUVV5bVWP2.png'
-draft: true
+draft: false
 updatedDate: 'Feb 29, 2024'
 ---
 
@@ -25,7 +25,8 @@ on:
   schedule: 
   - cron: "0 10 * * *"
   workflow_dispatch:
-`
+
+`
 
 The first part of the script specifies when the workflow should run. This script runs every day at 10 UTC and also whenever the workflow is manually dispatched. (Other common options include running on pushes or pull requests.)
 
