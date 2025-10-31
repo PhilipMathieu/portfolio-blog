@@ -1,0 +1,136 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import MermaidInit from '../components/MermaidInit.astro';
+import { generateGradient } from '../utils/gradient';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, updatedDate, heroImage, draft } = Astro.props;
+const displayTitle = import.meta.env.DEV && draft 
+    ? `[Draft] ${title}`
+    : title;
+const gradient = heroImage ? null : generateGradient(title);
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={displayTitle} description={description} />
+		<style>
+			main {
+				width: calc(100% - 2em);
+				max-width: 100%;
+				margin: 0;
+			}
+			.hero-image {
+				width: 100%;
+				max-width: 1020px;
+				margin: 0 auto;
+				overflow: hidden;
+				position: relative;
+			}
+			.hero-image img,
+			.hero-image .gradient {
+				display: block;
+				border-radius: 0;
+				border: 2px solid #000;
+			}
+			.hero-image img {
+				width: 100%;
+				height: auto;
+				max-height: 600px;
+			}
+			.hero-image .gradient {
+				width: 100%;
+				height: 510px;
+				background-size: cover;
+			}
+			.prose {
+				width: 720px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 1em;
+				color: var(--color-gray-800);
+			}
+			.prose iframe {
+				width: 100% !important;
+				height: 600px !important;
+				min-height: 600px !important;
+				max-height: 600px !important;
+				margin: 1.5em 0;
+				border: 2px solid #000;
+				display: block;
+				box-sizing: border-box;
+			}
+			/* Responsive heights for smaller screens */
+			@media (max-width: 480px) {
+				.prose iframe {
+					height: 400px !important;
+					min-height: 400px !important;
+					max-height: 400px !important;
+				}
+			}
+			@media (min-width: 720px) {
+				.prose iframe {
+					height: 600px !important;
+					min-height: 600px !important;
+					max-height: 600px !important;
+				}
+			}
+			.title {
+				margin-bottom: 1em;
+				padding: 1em 0;
+				text-align: center;
+				line-height: 1;
+			}
+			.title h1 {
+				margin: 0 0 0.5em 0;
+			}
+			.date {
+				margin-bottom: 0.5em;
+				color: var(--color-gray-600);
+			}
+			.last-updated-on {
+				font-style: italic;
+			}
+		</style>
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="hero-image">
+					{heroImage ? (
+						<img src={heroImage} alt="" />
+					) : gradient && (
+						<div class="gradient" style={{ background: gradient.background }}></div>
+					)}
+				</div>
+				<div class="prose">
+					<div class="title">
+						<div class="date">
+							<FormattedDate date={pubDate} />
+							{
+								updatedDate && (
+									<div class="last-updated-on">
+										Last updated on <FormattedDate date={updatedDate} />
+									</div>
+								)
+							}
+						</div>
+						<h1>{displayTitle}</h1>
+						<hr />
+					</div>
+					<slot />
+				</div>
+			</article>
+		</main>
+		<Footer />
+		<MermaidInit />
+	</body>
+</html>

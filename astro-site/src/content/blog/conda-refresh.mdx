@@ -1,0 +1,86 @@
+---
+title: 'When You Need to Reinstall All Your Conda Environments...'
+description: ''
+pubDate: 'Mar 4, 2024'
+heroImage: '/assets/2024-03-05 09_58_49-src_ ._conda_refresh.sh.png'
+draft: true
+updatedDate: 'Mar 5, 2024'
+---
+
+I am a big believer in using `conda` (specifically the [miniforge distribution from conda-forge](https://github.com/conda-forge/miniforge)) to manage any and all python environments. However, if you use it long enough you will eventually run into some sort of issue where you can't install or use packages as expected. In my case, an ill-advised attempt to free some disk space broke my `conda install` command. To fix this problem, I decided to create a script that basically "refreshes" all my environments and reinstalls conda.
+
+**Note: Use at your own risk! This may not work on all systems, particularly with more complicated conda configurations.**
+
+```bash
+#!/bin/bash
+
+# List all environments and export their environments to [env].yml using --from-history
+for env in $(conda env list | awk '/^\S+\s+/ {print $1}')
+do
+    echo "Exporting environment: $env"
+    conda env export --name $env --from-history > $env.yml
+done
+
+# Remove all environments
+echo "Removing all environments"
+for env in $(conda env list | awk '/^\S+\s+/ {print $1}')
+do
+    conda env remove --name $env --yes
+done
+
+# Any modifications to your shell rc files that were made by Miniforge:
+conda init --reverse
+
+# Remove the folder and all subfolders where the base environment for Miniforge was installed:
+CONDA_BASE_ENVIRONMENT=$(conda info --base)
+echo The next command will delete all files in ${CONDA_BASE_ENVIRONMENT}
+# Warning, the rm command below is irreversible!
+# check the output of the echo command above
+# To make sure you are deleting the correct directory
+rm -rf ${CONDA_BASE_ENVIRONMENT}
+
+# Any global conda configuration files that are left behind.
+echo ${HOME}/.condarc will be removed if it exists
+rm -f "${HOME}/.condarc"
+echo ${HOME}/.conda and underlying files will be removed if they exist.
+rm -fr ${HOME}/.conda
+
+# Uninstall conda
+echo "Uninstalling conda"
+rm -rf ~/miniconda
+rm -rf ~/anaconda
+rm -rf ~/.condarc
+rm -rf ~/.conda
+
+# Reinstall conda from miniforge
+echo "Reinstalling conda from miniforge"
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+bash Miniforge3-Linux-x86_64.sh -b -p $HOME/miniforge
+rm Miniforge3-Linux-x86_64.sh
+
+# Activate the base environment
+source $HOME/miniforge/bin/activate
+
+# Install mamba
+echo "Installing mamba"
+conda install -n base -c conda-forge mamba
+
+# Reinstall all environments from their .yml files using mamba
+for env in $(ls *.yml)
+do
+    echo "Reinstalling environment: $env"
+    mamba env create --file $env --yes
+done
+```
+
+The script does the following:
+
+1. - Lists all environments and exports their environments to [env].yml using --from-history
+2. - Removes all environments
+3. - Uninstalls conda
+4. - Reinstalls conda from miniforge
+5. - Reinstalls all environments from their .yml files using mamba
+
+
+This script was drafted by Le Chat Mistral with the exact list of steps above, then modified by me to work as I desired. I find little tasks like this to be a key way to use LLMs to improve my productivity.
+
