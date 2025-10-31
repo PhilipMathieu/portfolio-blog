@@ -19,6 +19,11 @@ export default defineConfig({
     sitemap(),
   ],
   markdown: {},
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+    },
+  },
 
   vite: {
     plugins: [tailwindcss()],
