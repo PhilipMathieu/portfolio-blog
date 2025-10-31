@@ -4,8 +4,10 @@ description: ''
 pubDate: 'Mar 4, 2024'
 heroImage: '/assets/2024-03-05 09_58_49-src_ ._conda_refresh.sh.png'
 draft: true
-updatedDate: 'Mar 5, 2024'
+updatedDate: 'Oct 31, 2025'
 ---
+
+*Note: As of 2025, I am nearly exclusively using [`uv`](https://docs.astral.sh/uv/) for dependency management. It is much faster and better at solving complicated environments. It has replaced both `conda`/`mamba` and `poetry` for me. I occasionally will use [`pixi`](https://pixi.sh/latest/) if I need to build a project that can only be compiled with `conda`-compatible distributions, as [it provides complete replacement functionality](https://pixi.sh/latest/switching_from/conda/).*
 
 I am a big believer in using `conda` (specifically the [miniforge distribution from conda-forge](https://github.com/conda-forge/miniforge)) to manage any and all python environments. However, if you use it long enough you will eventually run into some sort of issue where you can't install or use packages as expected. In my case, an ill-advised attempt to free some disk space broke my `conda install` command. To fix this problem, I decided to create a script that basically "refreshes" all my environments and reinstalls conda.
 
