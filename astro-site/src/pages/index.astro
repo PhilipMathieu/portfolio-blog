@@ -30,7 +30,10 @@ const posts = (await getCollection('blog'))
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
 			main {
-				width: 960px;
+				max-width: 960px;
+				width: 100%;
+				margin: 0 auto;
+				padding: 0 1rem;
 			}
 			ul {
 				display: flex;
@@ -65,11 +68,15 @@ const posts = (await getCollection('blog'))
 				border: 2px solid #000;
 				display: block;
 				width: 100%;
-				height: 360px;
 				object-fit: cover;
 				object-position: left center;
 			}
+			ul li img {
+				height: auto;
+				max-height: min(360px, 50vh);
+			}
 			ul li .gradient {
+				height: min(360px, 50vh);
 				background-size: cover;
 			}
 			ul li a {
@@ -101,6 +108,14 @@ const posts = (await getCollection('blog'))
 				}
 				ul li:first-child .title {
 					font-size: 1.563em;
+				}
+				ul li img {
+					height: auto;
+					max-height: 300px;
+					object-fit: cover;
+				}
+				ul li .gradient {
+					height: 250px;
 				}
 			}
 		</style>
