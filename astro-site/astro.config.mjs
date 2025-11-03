@@ -6,6 +6,8 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
 // Mermaid handled client-side; no rehype plugin needed
 // Iframe handling is done client-side in BlogPost.astro
 
@@ -18,7 +20,10 @@ export default defineConfig({
     mdx({}),
     sitemap(),
   ],
-  markdown: {},
+  markdown: {
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeKatex],
+  },
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',

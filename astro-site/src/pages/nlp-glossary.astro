@@ -1,0 +1,501 @@
+---
+import { readFile } from 'fs/promises';
+import { join } from 'path';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { parseGlossary } from '../utils/glossaryParser';
+import { render } from '../utils/markdownRenderer.js';
+
+// Read the glossary markdown file
+// In Astro, we need to resolve paths relative to the project root
+const projectRoot = process.cwd();
+const glossaryPath = join(projectRoot, 'src/content/pages/NLP Glossary.md');
+const glossaryContent = await readFile(glossaryPath, 'utf-8');
+
+// Parse the glossary into terms
+const terms = parseGlossary(glossaryContent);
+
+// Render all terms' markdown content (we'll show/hide them client-side)
+const renderedTerms = await Promise.all(
+	terms.map(async (term) => ({
+		...term,
+		renderedContent: await render(term.content, terms),
+	}))
+);
+
+// Default to first term
+const defaultTerm = renderedTerms[0];
+---
+
+<html lang="en">
+	<head>
+		<BaseHead 
+			title="NLP Glossary - Philip Englund Mathieu" 
+			description="A comprehensive glossary of NLP and machine learning terms with definitions, references, and examples." 
+		/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css" integrity="sha384-Zi52hHXOLjmD8g7sDwZ6GS8nKM8lKQKfU0e8nfY5h5nHy0nL/6nD8nP2VNVfwfnk" crossorigin="anonymous" />
+		<style>
+			.glossary-container {
+				display: grid;
+				grid-template-columns: 280px 1fr;
+				gap: 2rem;
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 1rem 2rem 1rem;
+			}
+			
+			.glossary-sidebar {
+				position: sticky;
+				top: 80px;
+				align-self: start;
+				max-height: calc(100vh - 100px);
+				display: flex;
+				flex-direction: column;
+				padding-right: 1rem;
+				overflow: hidden;
+			}
+			
+			.glossary-sidebar h2 {
+				font-size: 1.25rem;
+				margin-bottom: 1rem;
+				color: var(--color-gray-800);
+				flex-shrink: 0;
+			}
+			
+			.term-list-container {
+				flex: 1;
+				overflow-y: auto;
+				overflow-x: hidden;
+				/* Custom scrollbar styling */
+				scrollbar-width: thin;
+				scrollbar-color: var(--color-gray-300) var(--color-gray-100);
+			}
+			
+			.term-list-container::-webkit-scrollbar {
+				width: 8px;
+			}
+			
+			.term-list-container::-webkit-scrollbar-track {
+				background: var(--color-gray-100);
+				border-radius: 4px;
+			}
+			
+			.term-list-container::-webkit-scrollbar-thumb {
+				background: var(--color-gray-300);
+				border-radius: 4px;
+			}
+			
+			.term-list-container::-webkit-scrollbar-thumb:hover {
+				background: var(--color-gray-500);
+			}
+			
+			.term-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			
+			.term-list-item {
+				margin-bottom: 0.5rem;
+			}
+			
+			.term-link {
+				display: block;
+				padding: 0.5rem 0.75rem;
+				color: var(--color-gray-600);
+				text-decoration: none;
+				border-radius: 4px;
+				transition: background-color 0.2s ease, color 0.2s ease;
+				font-size: 0.875rem;
+				line-height: 1.4;
+			}
+			
+			.term-link:hover {
+				background-color: var(--color-gray-200);
+				color: var(--color-gray-800);
+			}
+			
+			.term-link.active {
+				background-color: var(--color-blue-500);
+				color: white;
+				font-weight: 500;
+				position: relative;
+			}
+			
+			.term-link.active::before {
+				content: "";
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				width: 3px;
+				background-color: #1580b0;
+				border-radius: 4px 0 0 4px;
+			}
+			
+			.glossary-content {
+				max-width: 700px;
+			}
+			
+			.introduction-section {
+				max-width: 700px;
+				margin-top: 4rem;
+				padding-top: 2rem;
+				/* Low-contrast footer styling */
+				border-top: 1px solid var(--color-gray-200);
+			}
+			
+			.introduction-header {
+				margin-bottom: 0.5rem;
+			}
+			
+			.introduction-header h1 {
+				margin: 0;
+				font-size: 0.75rem;
+				color: var(--color-gray-500);
+				font-weight: 500;
+				line-height: 1.3;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				font-family: var(--font-family-sans);
+			}
+			
+			.introduction-content {
+				color: var(--color-gray-500);
+				line-height: 1.6;
+				font-size: 0.8125rem;
+			}
+			
+			.introduction-content p {
+				margin-bottom: 0.75rem;
+			}
+			
+			.introduction-content p:last-child {
+				margin-bottom: 0;
+			}
+			
+			.term-section {
+				display: none;
+				/* Add scroll margin to account for sticky header */
+				scroll-margin-top: 80px;
+			}
+			
+			.term-section.active {
+				display: block;
+			}
+			
+			.term-header {
+				margin-bottom: 2rem;
+				padding-bottom: 1rem;
+				border-bottom: 2px solid var(--color-gray-300);
+			}
+			
+			.term-header h1 {
+				margin-bottom: 0.5rem;
+				color: var(--color-gray-800);
+			}
+			
+			.term-body {
+				color: var(--color-gray-600);
+				line-height: 1.6;
+			}
+			
+			.term-body p {
+				margin-bottom: 1.5rem;
+			}
+			
+			.term-body code {
+				background-color: var(--color-gray-200);
+				padding: 0.125rem 0.375rem;
+				border-radius: 3px;
+				font-size: 0.875em;
+			}
+			
+			.term-body pre {
+				background-color: var(--color-gray-200);
+				padding: 1.25rem;
+				border-radius: 6px;
+				overflow-x: auto;
+				margin: 1.5rem 0;
+			}
+			
+			.term-body pre code {
+				background: none;
+				padding: 0;
+			}
+			
+			.term-body ul,
+			.term-body ol {
+				margin: 1rem 0;
+				padding-left: 1.5rem;
+			}
+			
+			.term-body li {
+				margin: 0.5rem 0;
+			}
+			
+			/* Style "See also" sections - target paragraphs followed by lists */
+			.term-body p + ul {
+				list-style: none;
+				padding: 0;
+				margin: 1rem 0;
+			}
+			
+			.term-body p + ul li {
+				margin: 0.5rem 0;
+				padding-left: 1.5rem;
+				position: relative;
+			}
+			
+			.term-body p + ul li::before {
+				content: "•";
+				position: absolute;
+				left: 0.5rem;
+				color: var(--color-blue-500);
+				font-weight: bold;
+			}
+			
+			/* Style paragraphs with strong text (for "See also:" headings) */
+			.term-body p strong {
+				font-weight: 600;
+				color: var(--color-gray-800);
+				display: block;
+				margin-bottom: 0.5rem;
+			}
+			
+			/* Style paragraphs that contain "See also:" - add spacing and border */
+			.term-body p:has(strong) + ul {
+				margin-top: 0.5rem;
+			}
+			
+			/* Add border above "See also" sections when they follow content */
+			.term-body p:has(strong) {
+				margin-top: 2.5rem;
+				padding-top: 1.5rem;
+				border-top: 1px solid var(--color-gray-200);
+				margin-bottom: 0.75rem;
+			}
+			
+			/* Don't add border to first strong paragraph */
+			.term-body > p:first-child:has(strong) {
+				border-top: none;
+				padding-top: 0;
+				margin-top: 0;
+			}
+			
+			/* Style internal glossary links (links to other terms) */
+			.term-body a[href^="#"] {
+				color: var(--color-blue-500);
+				text-decoration: underline;
+				text-decoration-thickness: 1.5px;
+				text-underline-offset: 2px;
+				transition: color 0.2s ease;
+			}
+			
+			.term-body a[href^="#"]:hover {
+				color: #1580b0; /* Darker blue for hover */
+				text-decoration-thickness: 2px;
+			}
+			
+			/* Style external links (URLs and citations) */
+			.term-body a[href^="http"],
+			.term-body a[href^="https"] {
+				color: var(--color-blue-500);
+				text-decoration: underline;
+				text-decoration-style: dashed;
+				text-underline-offset: 2px;
+			}
+			
+			.term-body a[href^="http"]:hover,
+			.term-body a[href^="https"]:hover {
+				text-decoration-style: solid;
+			}
+			
+			/* Style citation links (e.g., @Author_Year) */
+			.term-body strong a {
+				font-weight: 600;
+				font-style: italic;
+			}
+			
+			/* KaTeX math styling */
+			.katex {
+				font-size: 1.1em;
+			}
+			
+			.katex-display {
+				margin: 1.5rem 0;
+				overflow-x: auto;
+				overflow-y: hidden;
+			}
+			
+			@media (max-width: 768px) {
+				.introduction-section {
+					margin-top: 3rem;
+					padding-top: 1.5rem;
+				}
+				
+				.introduction-header h1 {
+					font-size: 0.6875rem;
+				}
+				
+				.introduction-content {
+					font-size: 0.75rem;
+				}
+				
+				.glossary-container {
+					grid-template-columns: 1fr;
+					gap: 1.5rem;
+					padding: 0 1rem 1rem 1rem;
+				}
+				
+				.glossary-sidebar {
+					position: relative;
+					top: 0;
+					max-height: none;
+					overflow-y: visible;
+				}
+				
+				.term-list {
+					display: grid;
+					grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+					gap: 0.5rem;
+				}
+				
+				.term-link {
+					font-size: 0.8125rem;
+					padding: 0.375rem 0.5rem;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<div class="glossary-container">
+				<aside class="glossary-sidebar">
+					<h2>Terms</h2>
+					<div class="term-list-container">
+						<ul class="term-list">
+						{terms.map(term => (
+							<li class="term-list-item">
+								<a
+									href={`#${term.id}`}
+									class="term-link"
+									data-term-id={term.id}
+								>
+									{term.title}
+								</a>
+							</li>
+						))}
+						</ul>
+					</div>
+				</aside>
+				
+				<article class="glossary-content">
+					
+					{renderedTerms.map((term) => (
+						<div
+							class="term-section"
+							id={term.id}
+							data-term-id={term.id}
+							style:display={term.id === defaultTerm.id ? 'block' : 'none'}
+						>
+							<div class="term-header">
+								<h1>{term.title}</h1>
+							</div>
+							<div class="term-body" set:html={term.renderedContent} />
+							
+							<div class="introduction-section">
+								<div class="introduction-header">
+									<h1>About this Glossary</h1>
+								</div>
+								<div class="introduction-content">
+									<p>
+										This glossary contains definitions and explanations of key terms related to Natural Language Processing (NLP), 
+										machine learning, and large language models. Terms are organized alphabetically and include cross-references, 
+										mathematical formulas, and code examples where relevant.
+									</p>
+									<p>
+										Use the sidebar navigation to browse terms, or click on internal links within definitions to explore related concepts.
+									</p>
+								</div>
+							</div>
+						</div>
+					))}
+				</article>
+			</div>
+		</main>
+		<Footer />
+		
+		<script>
+			// Client-side navigation for glossary terms
+			function showTerm(termId) {
+				// Hide all term sections
+				document.querySelectorAll('.term-section').forEach(section => {
+					section.classList.remove('active');
+					section.style.display = 'none';
+				});
+				
+				// Show selected term
+				const selectedSection = document.querySelector(`.term-section[data-term-id="${termId}"]`);
+				if (selectedSection) {
+					selectedSection.classList.add('active');
+					selectedSection.style.display = 'block';
+				}
+				
+				// Update active link
+				document.querySelectorAll('.term-link').forEach(link => {
+					link.classList.remove('active');
+					if (link.getAttribute('data-term-id') === termId) {
+						link.classList.add('active');
+					}
+				});
+				
+				// Update URL hash
+				window.location.hash = termId;
+				
+				// Scroll to top of content, accounting for sticky header
+				// The scroll-margin-top CSS will handle the offset
+				if (selectedSection) {
+					setTimeout(() => {
+						selectedSection.scrollIntoView({ 
+							behavior: 'smooth', 
+							block: 'start' 
+						});
+					}, 10);
+				}
+			}
+			
+			document.addEventListener('DOMContentLoaded', () => {
+				// Get initial term from hash or use default
+				const hash = window.location.hash.slice(1);
+				const initialTermId = hash || document.querySelector('.term-section')?.getAttribute('data-term-id') || '';
+				if (initialTermId) {
+					showTerm(initialTermId);
+				}
+				
+				// Handle sidebar link clicks
+				document.querySelectorAll('.term-link').forEach(link => {
+					link.addEventListener('click', (e) => {
+						e.preventDefault();
+						const termId = link.getAttribute('data-term-id');
+						if (termId) {
+							showTerm(termId);
+						}
+					});
+				});
+				
+				// Handle hash changes (browser back/forward or direct URL access)
+				window.addEventListener('hashchange', () => {
+					const hash = window.location.hash.slice(1);
+					if (hash) {
+						showTerm(hash);
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
+
