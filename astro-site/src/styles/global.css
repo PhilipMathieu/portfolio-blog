@@ -190,6 +190,22 @@
 		@apply text-gray-500;
 	}
 
+	/* KaTeX math rendering - hide HTML, show MathML only */
+	/* MathML renders better than the HTML version */
+	.katex .katex-html {
+		position: absolute;
+		clip: rect(1px, 1px, 1px, 1px);
+		padding: 0;
+		border: 0;
+		height: 1px;
+		width: 1px;
+		overflow: hidden;
+	}
+	
+	.katex .katex-mathml {
+		/* Show MathML rendering */
+	}
+
 	blockquote {
 		@apply border-l-4 border-primary-500 pl-5 m-0;
 	}
