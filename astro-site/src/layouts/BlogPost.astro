@@ -23,101 +23,34 @@ const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '
 <html lang="en">
 	<head>
 		<BaseHead title={displayTitle} description={description} />
-		<style>
-			main {
-				max-width: 1020px;
-				width: 100%;
-				margin: 0 auto;
-				padding: 0;
-			}
-			.hero-image {
-				width: 100%;
-				max-width: 1020px;
-				margin: 0 auto;
-				overflow: hidden;
-				position: relative;
-			}
-			.hero-image img,
-			.hero-image .gradient {
-				display: block;
-				border-radius: 0;
-				border: 2px solid #000;
-			}
-			.hero-image img {
-				width: 100%;
-				height: auto;
-				max-height: min(600px, 60vh);
-			}
-			.hero-image .gradient {
-				width: 100%;
-				height: min(510px, 60vh);
-				background-size: cover;
-			}
-			@media (max-width: 768px) {
-				.hero-image img {
-					max-height: 300px;
-				}
-				.hero-image .gradient {
-					height: 250px;
-				}
-			}
-			.prose {
-				max-width: 720px;
-				width: 100%;
-				margin: 0 auto;
-				padding: 1rem;
-				color: var(--color-gray-800);
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: var(--color-gray-600);
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-			.share-container {
-				display: flex;
-				justify-content: center;
-				margin-top: 1em;
-			}
-		</style>
 	</head>
 
 	<body>
 		<Header />
-		<main>
+		<main class="max-w-[1020px] w-full mx-auto p-0">
 			<article>
-				<div class="hero-image">
+				<div class="hero-image w-full max-w-[1020px] mx-auto overflow-hidden relative">
 					{heroImage ? (
-						<img src={heroImage} alt="" />
+						<img src={heroImage} alt="" class="block rounded-none border-2 border-black w-full h-auto max-h-[min(600px,60vh)] max-md:max-h-[300px]" />
 					) : gradient && (
-						<div class="gradient" style={{ background: gradient.background }}></div>
+						<div class="gradient block rounded-none border-2 border-black w-full h-[min(510px,60vh)] bg-cover max-md:h-[250px]" style={{ background: gradient.background }}></div>
 					)}
 				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
+				<div class="prose max-w-[720px] w-full mx-auto p-4 text-gray-800">
+					<div class="title mb-4 py-4 text-center leading-none">
+						<div class="date mb-2 text-gray-600">
 							<FormattedDate date={pubDate} />
 							{
 								updatedDate && (
-									<div class="last-updated-on">
+									<div class="last-updated-on italic">
 										Last updated on <FormattedDate date={updatedDate} />
 									</div>
 								)
 							}
 						</div>
-						<h1>{displayTitle}</h1>
+						<h1 class="mb-2">{displayTitle}</h1>
 						{!isAboutPage && (
-							<div class="share-container">
+							<div class="share-container flex justify-center mt-4">
 								<ShareButton title={displayTitle} />
 							</div>
 						)}

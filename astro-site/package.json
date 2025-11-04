@@ -16,6 +16,7 @@
     "astro": "^5.15.3",
     "katex": "^0.16.25",
     "rehype-katex": "^7.0.1",
+    "rehype-pretty-code": "^0.14.1",
     "rehype-stringify": "^10.0.1",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",

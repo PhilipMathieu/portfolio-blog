@@ -16,8 +16,15 @@
 	--color-gray-600: #4A4A4A;
 	--color-gray-800: #1A1A1A;
 	
-	/* Blue accent color */
-	--color-blue-500: #1D9ACC;
+	/* Primary accent color - RGB(206, 17, 45) */
+	--color-primary-500: #CE112D;
+	--color-primary-600: #A00E24; /* Darker shade for hover states */
+	--color-primary-400: #E6394D; /* Lighter shade */
+	
+	/* Link color - complementary blue */
+	--color-link-500: #1D9ACC;
+	--color-link-600: #1580b0; /* Darker shade for hover states */
+	--color-link-400: #4BB4E6; /* Lighter shade */
 	
 	/* Font families - configured for Tailwind utilities */
 	--font-family-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -39,7 +46,12 @@
 	--gray-500: #666666;
 	--gray-600: #4A4A4A;
 	--gray-800: #1A1A1A;
-	--blue-500: #1D9ACC;
+	--primary-500: #CE112D;
+	--primary-600: #A00E24;
+	--primary-400: #E6394D;
+	--link-500: #1D9ACC;
+	--link-600: #1580b0;
+	--link-400: #4BB4E6;
 	--box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 	--box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 	
@@ -48,262 +60,192 @@
 	--font-family-serif: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
-body {
-	font-family: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: var(--color-gray-100);
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: var(--color-gray-800);
-	font-size: 14px;
-	line-height: 1.5;
-}
-
-main {
-	max-width: var(--max-width-8xl);
-	margin: 0 auto;
-	padding: 0 1rem;
-}
-h1,
-.h1 {
-	margin: 0;
-	color: var(--color-gray-800);
-	font-family: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-	font-size: 2.5rem;
-	font-weight: 600;
-	line-height: 1.1;
-}
-
-h2,
-.h2 {
-	margin: 0;
-	color: var(--color-gray-800);
-	font-family: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-	font-size: 1.75rem;
-	font-weight: 600;
-	line-height: 1.2;
-}
-
-h3,
-.h3 {
-	margin: 0;
-	color: var(--color-gray-800);
-	font-family: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-	font-size: 1.25rem;
-	font-weight: 600;
-	line-height: 1.3;
-}
-
-h4,
-.h4 {
-	margin: 0;
-	color: var(--color-gray-800);
-	font-family: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-	font-size: 1rem;
-	font-weight: 600;
-	line-height: 1.4;
-}
-
-h5,
-h6 {
-	margin: 0;
-	color: var(--color-gray-800);
-	font-family: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-	font-weight: 600;
-}
-strong,
-b {
-	font-weight: 700;
-}
-
-a {
-	color: var(--color-blue-500);
-	text-decoration: none;
-}
-
-a:hover {
-	color: var(--color-blue-500);
-	text-decoration: underline;
-}
-
-p {
-	margin: 0 0 1rem 0;
-	color: var(--color-gray-600);
-	letter-spacing: -0.011em;
-	line-height: 1.5;
-}
-
-.prose p {
-	margin-bottom: 2rem;
-}
-
-.prose ul,
-.prose ol {
-	margin: 1rem 0;
-	padding-left: 2rem;
-	list-style-position: outside;
-}
-
-.prose ul {
-	list-style-type: disc;
-}
-
-.prose ol {
-	list-style-type: decimal;
-}
-
-.prose li {
-	margin: 0.5rem 0;
-	color: var(--color-gray-600);
-	line-height: 1.5;
-}
-
-.prose ul ul,
-.prose ol ol,
-.prose ul ol,
-.prose ol ul {
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
-}
-
-
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
-img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 0;
-}
-
-code {
-	padding: 2px 5px;
-	background-color: var(--color-gray-200);
-	border-radius: 2px;
-	font-family: monospace;
-}
-
-pre {
-	padding: 1.5em;
-	background-color: var(--color-gray-200);
-	border-radius: 8px;
-}
-
-pre > code {
-	all: unset;
-	background: none;
-	padding: 0;
-}
-
-blockquote {
-	border-left: 4px solid var(--color-blue-500);
-	padding: 0 0 0 20px;
-	margin: 0;
-}
-
-hr {
-	border: none;
-	border-top: 1px solid var(--color-gray-200);
-	margin: 1rem 0;
-}
-
-@media (max-width: 768px) {
-	h1,
-	.h1 {
-		font-size: 1.5rem;
+@layer base {
+	body {
+		@apply font-sans m-0 p-0 text-left bg-gray-100 break-words text-gray-800 text-sm leading-normal;
 	}
-	
-	h2,
-	.h2 {
-		font-size: 1.25rem;
+
+	main {
+		@apply max-w-[90rem] mx-auto px-4;
 	}
-}
 
-.sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
-	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
-	white-space: nowrap;
-}
+	h1, .h1 {
+		@apply m-0 text-gray-800 font-serif text-4xl font-semibold leading-tight;
+	}
 
-/* Mermaid diagram styling */
-.mermaid {
-	background-color: var(--color-gray-100);
-	border-radius: 8px;
-	padding: 1.5em;
-	margin: 1.5em 0;
-	overflow-x: auto;
-	text-align: center;
-}
+	h2, .h2 {
+		@apply m-0 text-gray-800 font-serif text-3xl font-semibold leading-snug;
+	}
 
-.prose .mermaid {
-	max-width: 100%;
-}
+	h3, .h3 {
+		@apply m-0 text-gray-800 font-serif text-xl font-semibold leading-snug;
+	}
 
-/* Copy button styling */
-.copy-button-wrapper {
-	position: relative;
-	display: block;
-	width: 100%;
-	margin: 0;
-}
+	h4, .h4 {
+		@apply m-0 text-gray-800 font-serif text-base font-semibold leading-normal;
+	}
 
-.copy-button-wrapper pre,
-.copy-button-wrapper blockquote {
-	margin: 0;
-}
+	h5, h6 {
+		@apply m-0 text-gray-800 font-serif font-semibold;
+	}
 
-.copy-button {
-	position: absolute;
-	top: 0.75rem;
-	right: 0.75rem;
-	padding: 0.5rem 0.75rem;
-	background-color: var(--color-gray-300);
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	font-size: 0.875rem;
-	color: var(--color-gray-800);
-	font-family: var(--font-family-sans);
-	transition: background-color 0.2s ease, color 0.2s ease;
-	z-index: 10;
-	display: flex;
-	align-items: center;
-	gap: 0.25rem;
-	opacity: 0.9;
-	pointer-events: auto;
-}
+	strong, b {
+		@apply font-bold;
+	}
 
-.copy-button:hover {
-	background-color: var(--color-gray-400);
-	opacity: 1;
-}
+	a {
+		@apply text-link-500 no-underline;
+	}
 
-.copy-button:active {
-	background-color: var(--color-gray-500);
-}
+	a:hover {
+		@apply text-link-500 underline;
+	}
 
-.copy-button.copied {
-	background-color: var(--color-blue-500);
-	color: white;
+	p {
+		@apply mb-4 text-gray-600 tracking-tight leading-normal;
+	}
+
+	.prose p {
+		@apply mb-8;
+	}
+
+	.prose ul, .prose ol {
+		@apply my-4 pl-8 list-outside;
+	}
+
+	.prose ul {
+		@apply list-disc;
+	}
+
+	.prose ol {
+		@apply list-decimal;
+	}
+
+	.prose li {
+		@apply my-2 text-gray-600 leading-normal;
+	}
+
+	.prose ul ul,
+	.prose ol ol,
+	.prose ul ol,
+	.prose ol ul {
+		@apply my-2;
+	}
+
+	textarea {
+		@apply w-full text-base;
+	}
+
+	input {
+		@apply text-base;
+	}
+
+	table {
+		@apply w-full;
+	}
+
+	img {
+		@apply max-w-full h-auto rounded-none;
+	}
+
+	code {
+		@apply px-1 py-0.5 bg-gray-200 rounded text-sm font-mono;
+	}
+
+	pre {
+		@apply p-6 bg-gray-200 rounded-lg;
+	}
+
+	pre > code {
+		@apply bg-transparent p-0;
+	}
+
+	/* Syntax highlighting styles from rehype-pretty-code */
+	pre[data-theme] {
+		@apply bg-gray-200;
+	}
+
+	pre code {
+		@apply bg-transparent p-0 text-sm;
+		display: block;
+		overflow-x: auto;
+	}
+
+	pre code .line {
+		@apply px-0;
+	}
+
+	/* Ensure code blocks have proper spacing */
+	pre[data-theme] code {
+		@apply text-gray-800;
+	}
+
+	/* Syntax highlighting token colors - override theme to match site colors */
+	pre[data-theme] code .token {
+		@apply text-gray-800;
+	}
+
+	/* Line numbers if enabled */
+	pre code .line-number {
+		@apply text-gray-500;
+	}
+
+	blockquote {
+		@apply border-l-4 border-primary-500 pl-5 m-0;
+	}
+
+	hr {
+		@apply border-0 border-t border-gray-200 my-4;
+	}
+
+	@media (max-width: 768px) {
+		h1, .h1 {
+			@apply text-2xl;
+		}
+		
+		h2, .h2 {
+			@apply text-xl;
+		}
+	}
+
+	.sr-only {
+		@apply absolute w-px h-px p-0 m-0 overflow-hidden;
+		clip: rect(1px 1px 1px 1px);
+		clip: rect(1px, 1px, 1px, 1px);
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.mermaid {
+		@apply bg-gray-100 rounded-lg p-6 my-6 overflow-x-auto text-center;
+	}
+
+	.prose .mermaid {
+		@apply max-w-full;
+	}
+
+	.copy-button-wrapper {
+		@apply relative block w-full m-0;
+	}
+
+	.copy-button-wrapper pre,
+	.copy-button-wrapper blockquote {
+		@apply m-0;
+	}
+
+	.copy-button {
+		@apply absolute top-3 right-3 px-3 py-2 bg-gray-300 border-0 rounded cursor-pointer text-sm text-gray-800 font-sans transition-all z-10 flex items-center gap-1 opacity-90;
+	}
+
+	.copy-button:hover {
+		@apply bg-gray-400 opacity-100;
+	}
+
+	.copy-button:active {
+		@apply bg-gray-500;
+	}
+
+	.copy-button.copied {
+		@apply bg-primary-500 text-white;
+	}
 }

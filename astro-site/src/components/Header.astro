@@ -3,30 +3,30 @@ import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
 
-<header>
-	<nav>
-		<div class="left-nav">
-			<h2><a href="/">{SITE_TITLE}</a></h2>
-			<div class="internal-links">
-				<HeaderLink href="/">Blog</HeaderLink>
-				<HeaderLink href="/about">About</HeaderLink>
-				<HeaderLink href="/nlp-glossary">NLP Glossary</HeaderLink>
+<header class="sticky top-0 z-[100] m-0 px-4 bg-white shadow-sm">
+	<nav class="flex items-center justify-between min-h-14">
+		<div class="left-nav flex items-baseline gap-4">
+			<h2 class="m-0 text-base leading-none"><a href="/" class="no-underline leading-none text-gray-800">{SITE_TITLE}</a></h2>
+			<div class="internal-links flex gap-2">
+				<HeaderLink href="/" class="px-2 py-3 text-gray-800 no-underline leading-none hover:underline max-[720px]:px-1 max-[720px]:py-2 [&.active:not(:hover)]:underline" style="text-decoration-thickness: 0.1em; text-underline-offset: 0.25em;">Blog</HeaderLink>
+				<HeaderLink href="/about" class="px-2 py-3 text-gray-800 no-underline leading-none hover:underline max-[720px]:px-1 max-[720px]:py-2 [&.active:not(:hover)]:underline" style="text-decoration-thickness: 0.1em; text-underline-offset: 0.25em;">About</HeaderLink>
+				<HeaderLink href="/nlp-glossary" class="px-2 py-3 text-gray-800 no-underline leading-none hover:underline max-[720px]:px-1 max-[720px]:py-2 [&.active:not(:hover)]:underline" style="text-decoration-thickness: 0.1em; text-underline-offset: 0.25em;">NLP Glossary</HeaderLink>
 			</div>
 		</div>
-		<div class="social-links">
-			<a href="mailto:philip.eng.mathieu+blog@gmail.com" target="_blank">
+		<div class="social-links hidden md:flex">
+			<a href="mailto:philip.eng.mathieu+blog@gmail.com" target="_blank" class="flex px-2 py-3 text-gray-800 no-underline leading-none">
 				<span class="sr-only">Email</span>
 				<svg viewBox="0 0 24 24" aria-hidden="true" width="32" height="32">
 					<path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
 				</svg>
 			</a>
-			<a href="https://www.linkedin.com/in/philipmathieu/" target="_blank">
+			<a href="https://www.linkedin.com/in/philipmathieu/" target="_blank" class="flex px-2 py-3 text-gray-800 no-underline leading-none">
 				<span class="sr-only">Connect on LinkedIn</span>
 				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32">
 					<path fill="currentColor" d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175A1.161 1.161 0 0 1 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.213c.837 0 1.356-.554 1.356-1.248-.015-.709-.52-1.248-1.341-1.248-.821 0-1.356.54-1.356 1.248 0 .694.52 1.248 1.326 1.248h.015zM13.458 13.394V9.359c0-2.161-1.154-3.168-2.693-3.168-1.24 0-1.796.681-2.109 1.159V6.169H6.255c.03.681 0 7.225 0 7.225h2.401v-4.037c0-.216.015-.432.08-.586.175-.431.574-.879 1.244-.879.878 0 1.23.663 1.23 1.635v3.867h2.248z"/>
 				</svg>
 			</a>
-			<a href="https://github.com/PhilipMathieu/" target="_blank">
+			<a href="https://github.com/PhilipMathieu/" target="_blank" class="flex px-2 py-3 text-gray-800 no-underline leading-none">
 				<span class="sr-only">Go to GitHub profile</span>
 				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
 					><path
@@ -37,72 +37,4 @@ import HeaderLink from './HeaderLink.astro';
 			</a>
 		</div>
 	</nav>
- </header>
-<style>
-	header {
-		position: sticky;
-		top: 0;
-		z-index: 100;
-		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
-
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
-	nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		min-height: 56px;
-	}
-	.left-nav {
-		display: flex;
-		align-items: baseline;
-		gap: 1rem;
-	}
-	nav a {
-		padding: 0.75rem 0.5rem;
-		color: var(--color-gray-800);
-		text-decoration: none;
-		line-height: 1;
-	}
-	h2, h2 a { 
-		line-height: 1; 
-	}
-	.social-links,
-	.social-links a {
-		display: flex;
-	}
-	.internal-links {
-		display: flex;
-		gap: 0.5rem;
-	}
-	/* Show underline on hover for any link */
-	.internal-links a:hover {
-		text-decoration: underline;
-		text-decoration-thickness: 0.1em;
-		text-underline-offset: 0.25em;
-	}
-	/* Show underline on active link only when container is not hovered */
-	.internal-links:not(:hover) a.active {
-		text-decoration: underline;
-		text-decoration-thickness: 0.1em;
-		text-underline-offset: 0.25em;
-	}
-	@media (max-width: 720px) {
-		.social-links {
-			display: none;
-		}
-		.internal-links a {
-			padding: 0.5rem 0.25rem;
-		}
-	}
-</style>
+</header>

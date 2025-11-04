@@ -7,6 +7,7 @@ import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 import rehypeKatex from 'rehype-katex';
+import rehypePrettyCode from 'rehype-pretty-code';
 import remarkMath from 'remark-math';
 // Mermaid handled client-side; no rehype plugin needed
 // Iframe handling is done client-side in BlogPost.astro
@@ -22,7 +23,22 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex],
+    rehypePlugins: [
+      [
+        rehypeKatex,
+        {
+          throwOnError: false,
+          strict: false,
+        },
+      ], // KaTeX must run before pretty-code to process math blocks
+      [
+        rehypePrettyCode,
+        {
+          theme: 'github-light',
+          keepBackground: false,
+        },
+      ],
+    ],
   },
   image: {
     service: {

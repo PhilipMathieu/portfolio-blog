@@ -34,40 +34,9 @@ const defaultTerm = renderedTerms[0];
 			title="NLP Glossary - Philip Englund Mathieu" 
 			description="A comprehensive glossary of NLP and machine learning terms with definitions, references, and examples." 
 		/>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css" integrity="sha384-Zi52hHXOLjmD8g7sDwZ6GS8nKM8lKQKfU0e8nfY5h5nHy0nL/6nD8nP2VNVfwfnk" crossorigin="anonymous" />
 		<style>
-			.glossary-container {
-				display: grid;
-				grid-template-columns: 280px 1fr;
-				gap: 2rem;
-				max-width: 1200px;
-				margin: 0 auto;
-				padding: 0 1rem 2rem 1rem;
-			}
-			
-			.glossary-sidebar {
-				position: sticky;
-				top: 80px;
-				align-self: start;
-				max-height: calc(100vh - 100px);
-				display: flex;
-				flex-direction: column;
-				padding-right: 1rem;
-				overflow: hidden;
-			}
-			
-			.glossary-sidebar h2 {
-				font-size: 1.25rem;
-				margin-bottom: 1rem;
-				color: var(--color-gray-800);
-				flex-shrink: 0;
-			}
-			
+			/* Custom scrollbar styling */
 			.term-list-container {
-				flex: 1;
-				overflow-y: auto;
-				overflow-x: hidden;
-				/* Custom scrollbar styling */
 				scrollbar-width: thin;
 				scrollbar-color: var(--color-gray-300) var(--color-gray-100);
 			}
@@ -90,34 +59,8 @@ const defaultTerm = renderedTerms[0];
 				background: var(--color-gray-500);
 			}
 			
-			.term-list {
-				list-style: none;
-				padding: 0;
-				margin: 0;
-			}
-			
-			.term-list-item {
-				margin-bottom: 0.5rem;
-			}
-			
-			.term-link {
-				display: block;
-				padding: 0.5rem 0.75rem;
-				color: var(--color-gray-600);
-				text-decoration: none;
-				border-radius: 4px;
-				transition: background-color 0.2s ease, color 0.2s ease;
-				font-size: 0.875rem;
-				line-height: 1.4;
-			}
-			
-			.term-link:hover {
-				background-color: var(--color-gray-200);
-				color: var(--color-gray-800);
-			}
-			
 			.term-link.active {
-				background-color: var(--color-blue-500);
+				background-color: var(--color-primary-500);
 				color: white;
 				font-weight: 500;
 				position: relative;
@@ -130,54 +73,12 @@ const defaultTerm = renderedTerms[0];
 				top: 0;
 				bottom: 0;
 				width: 3px;
-				background-color: #1580b0;
+				background-color: var(--color-primary-600);
 				border-radius: 4px 0 0 4px;
-			}
-			
-			.glossary-content {
-				max-width: 700px;
-			}
-			
-			.introduction-section {
-				max-width: 700px;
-				margin-top: 4rem;
-				padding-top: 2rem;
-				/* Low-contrast footer styling */
-				border-top: 1px solid var(--color-gray-200);
-			}
-			
-			.introduction-header {
-				margin-bottom: 0.5rem;
-			}
-			
-			.introduction-header h1 {
-				margin: 0;
-				font-size: 0.75rem;
-				color: var(--color-gray-500);
-				font-weight: 500;
-				line-height: 1.3;
-				text-transform: uppercase;
-				letter-spacing: 0.08em;
-				font-family: var(--font-family-sans);
-			}
-			
-			.introduction-content {
-				color: var(--color-gray-500);
-				line-height: 1.6;
-				font-size: 0.8125rem;
-			}
-			
-			.introduction-content p {
-				margin-bottom: 0.75rem;
-			}
-			
-			.introduction-content p:last-child {
-				margin-bottom: 0;
 			}
 			
 			.term-section {
 				display: none;
-				/* Add scroll margin to account for sticky header */
 				scroll-margin-top: 80px;
 			}
 			
@@ -185,83 +86,22 @@ const defaultTerm = renderedTerms[0];
 				display: block;
 			}
 			
-			.term-header {
-				margin-bottom: 2rem;
-				padding-bottom: 1rem;
-				border-bottom: 2px solid var(--color-gray-300);
-			}
-			
-			.term-header h1 {
-				margin-bottom: 0.5rem;
-				color: var(--color-gray-800);
-			}
-			
-			.term-body {
-				color: var(--color-gray-600);
-				line-height: 1.6;
-			}
-			
-			.term-body p {
-				margin-bottom: 1.5rem;
-			}
-			
-			.term-body code {
-				background-color: var(--color-gray-200);
-				padding: 0.125rem 0.375rem;
-				border-radius: 3px;
-				font-size: 0.875em;
-			}
-			
-			.term-body pre {
-				background-color: var(--color-gray-200);
-				padding: 1.25rem;
-				border-radius: 6px;
-				overflow-x: auto;
-				margin: 1.5rem 0;
-			}
-			
-			.term-body pre code {
-				background: none;
-				padding: 0;
-			}
-			
-			.term-body ul,
-			.term-body ol {
-				margin: 1rem 0;
-				padding-left: 1.5rem;
-			}
-			
-			.term-body li {
-				margin: 0.5rem 0;
-			}
-			
 			/* Style "See also" sections - target paragraphs followed by lists */
 			.term-body p + ul {
 				list-style: none;
-				padding: 0;
-				margin: 1rem 0;
-			}
-			
-			.term-body p + ul li {
-				margin: 0.5rem 0;
-				padding-left: 1.5rem;
-				position: relative;
 			}
 			
 			.term-body p + ul li::before {
 				content: "•";
 				position: absolute;
 				left: 0.5rem;
-				color: var(--color-blue-500);
+				color: var(--color-link-500);
 				font-weight: bold;
 			}
 			
 			/* Style paragraphs with strong text (for "See also:" headings) */
 			.term-body p strong {
-				font-weight: 600;
-				color: var(--color-gray-800);
 				display: block;
-				margin-bottom: 0.5rem;
 			}
 			
 			/* Style paragraphs that contain "See also:" - add spacing and border */
@@ -286,7 +126,7 @@ const defaultTerm = renderedTerms[0];
 			
 			/* Style internal glossary links (links to other terms) */
 			.term-body a[href^="#"] {
-				color: var(--color-blue-500);
+				color: var(--color-link-500);
 				text-decoration: underline;
 				text-decoration-thickness: 1.5px;
 				text-underline-offset: 2px;
@@ -294,14 +134,14 @@ const defaultTerm = renderedTerms[0];
 			}
 			
 			.term-body a[href^="#"]:hover {
-				color: #1580b0; /* Darker blue for hover */
+				color: var(--color-link-600);
 				text-decoration-thickness: 2px;
 			}
 			
 			/* Style external links (URLs and citations) */
 			.term-body a[href^="http"],
 			.term-body a[href^="https"] {
-				color: var(--color-blue-500);
+				color: var(--color-link-500);
 				text-decoration: underline;
 				text-decoration-style: dashed;
 				text-underline-offset: 2px;
@@ -310,12 +150,6 @@ const defaultTerm = renderedTerms[0];
 			.term-body a[href^="http"]:hover,
 			.term-body a[href^="https"]:hover {
 				text-decoration-style: solid;
-			}
-			
-			/* Style citation links (e.g., @Author_Year) */
-			.term-body strong a {
-				font-weight: 600;
-				font-style: italic;
 			}
 			
 			/* KaTeX math styling */
@@ -328,61 +162,21 @@ const defaultTerm = renderedTerms[0];
 				overflow-x: auto;
 				overflow-y: hidden;
 			}
-			
-			@media (max-width: 768px) {
-				.introduction-section {
-					margin-top: 3rem;
-					padding-top: 1.5rem;
-				}
-				
-				.introduction-header h1 {
-					font-size: 0.6875rem;
-				}
-				
-				.introduction-content {
-					font-size: 0.75rem;
-				}
-				
-				.glossary-container {
-					grid-template-columns: 1fr;
-					gap: 1.5rem;
-					padding: 0 1rem 1rem 1rem;
-				}
-				
-				.glossary-sidebar {
-					position: relative;
-					top: 0;
-					max-height: none;
-					overflow-y: visible;
-				}
-				
-				.term-list {
-					display: grid;
-					grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-					gap: 0.5rem;
-				}
-				
-				.term-link {
-					font-size: 0.8125rem;
-					padding: 0.375rem 0.5rem;
-				}
-			}
 		</style>
 	</head>
 
 	<body>
 		<Header />
 		<main>
-			<div class="glossary-container">
-				<aside class="glossary-sidebar">
-					<h2>Terms</h2>
-					<div class="term-list-container">
-						<ul class="term-list">
+			<div class="glossary-container grid grid-cols-[280px_1fr] gap-8 max-w-[1200px] mx-auto px-4 py-8 items-start max-md:grid-cols-1 max-md:gap-6 max-md:py-8 max-md:px-4">
+				<aside class="glossary-sidebar sticky top-20 self-start max-h-[calc(100vh-100px)] flex flex-col pr-4 overflow-hidden max-md:relative max-md:top-0 max-md:max-h-none max-md:overflow-y-visible">
+					<div class="term-list-container flex-1 overflow-y-auto overflow-x-hidden">
+						<ul class="term-list list-none p-0 m-0 max-md:grid max-md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] max-md:gap-2">
 						{terms.map(term => (
-							<li class="term-list-item">
+							<li class="term-list-item mb-2">
 								<a
 									href={`#${term.id}`}
-									class="term-link"
+									class="term-link block px-3 py-2 text-gray-600 no-underline rounded transition-colors duration-200 text-sm leading-[1.4] hover:bg-gray-200 hover:text-gray-800 max-md:text-[0.8125rem] max-md:px-2 max-md:py-1.5"
 									data-term-id={term.id}
 								>
 									{term.title}
@@ -393,31 +187,30 @@ const defaultTerm = renderedTerms[0];
 					</div>
 				</aside>
 				
-				<article class="glossary-content">
-					
+				<article class="glossary-content max-w-[700px] pt-0">
 					{renderedTerms.map((term) => (
 						<div
-							class="term-section"
+							class="term-section pt-0"
 							id={term.id}
 							data-term-id={term.id}
 							style:display={term.id === defaultTerm.id ? 'block' : 'none'}
 						>
-							<div class="term-header">
-								<h1>{term.title}</h1>
+							<div class="term-header mt-0 mb-8 pt-0 pb-4 border-b-2 border-primary-600">
+								<h1 class="mt-0 mb-2 text-gray-800">{term.title}</h1>
 							</div>
-							<div class="term-body" set:html={term.renderedContent} />
+							<div class="term-body text-gray-600 leading-[1.6] [&_p]:mb-6 [&_code]:px-1 [&_code]:py-0.5 [&_code]:bg-gray-200 [&_code]:rounded [&_code]:text-[0.875em] [&_pre]:p-5 [&_pre]:bg-gray-200 [&_pre]:rounded-md [&_pre]:overflow-x-auto [&_pre]:my-6 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_ul]:my-4 [&_ol]:my-4 [&_ul]:pl-6 [&_ol]:pl-6 [&_li]:my-2 [&_strong]:font-semibold [&_strong]:text-gray-800" set:html={term.renderedContent} />
 							
-							<div class="introduction-section">
-								<div class="introduction-header">
-									<h1>About this Glossary</h1>
+							<div class="introduction-section max-w-[700px] mt-16 pt-8 border-t border-gray-200 max-md:mt-12 max-md:pt-6">
+								<div class="introduction-header mb-2">
+									<h1 class="m-0 text-xs text-gray-500 font-medium leading-[1.3] uppercase tracking-wider font-sans max-md:text-[0.6875rem]">About this Glossary</h1>
 								</div>
-								<div class="introduction-content">
-									<p>
+								<div class="introduction-content text-gray-500 leading-[1.6] text-[0.8125rem] max-md:text-xs">
+									<p class="mb-3 last:mb-0">
 										This glossary contains definitions and explanations of key terms related to Natural Language Processing (NLP), 
 										machine learning, and large language models. Terms are organized alphabetically and include cross-references, 
 										mathematical formulas, and code examples where relevant.
 									</p>
-									<p>
+									<p class="mb-3 last:mb-0">
 										Use the sidebar navigation to browse terms, or click on internal links within definitions to explore related concepts.
 									</p>
 								</div>

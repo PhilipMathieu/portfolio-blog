@@ -5,10 +5,11 @@ import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import rehypeStringify from 'rehype-stringify';
 import remarkRehype from 'remark-rehype';
+import rehypePrettyCode from 'rehype-pretty-code';
 import { generateSlug } from './glossaryParser';
 
 /**
- * Render markdown content to HTML with math support and glossary link transformations
+ * Render markdown content to HTML with math support, syntax highlighting, and glossary link transformations
  */
 export async function render(content: string, allTerms: Array<{ id: string; title: string }> = []): Promise<string> {
 	// Transform glossary internal links (e.g., [[#term]] or [[term]])
@@ -54,7 +55,14 @@ export async function render(content: string, allTerms: Array<{ id: string; titl
 		.use(remarkGfm) // GitHub Flavored Markdown support
 		.use(remarkMath) // Math support
 		.use(remarkRehype, { allowDangerousHtml: true })
-		.use(rehypeKatex) // KaTeX for math rendering
+		.use(rehypeKatex, {
+			throwOnError: false,
+			strict: false,
+		}) // KaTeX for math rendering - must run before pretty-code
+		.use(rehypePrettyCode, {
+			theme: 'github-light',
+			keepBackground: false,
+		})
 		.use(rehypeStringify, { allowDangerousHtml: true });
 	
 	const result = await processor.process(transformedContent);
