@@ -2,6 +2,7 @@
 title: "How Claude helped me win my company's internal hackathon"
 description: "This is my first entry into the canon of 'How I Use AI' blog posts."
 pubDate: 2025-10-31
+heroImage: '/assets/claude.png'
 draft: false
 tags: [ai, hackathon, productivity]
 ---
