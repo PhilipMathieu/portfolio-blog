@@ -5,6 +5,7 @@ pubDate: 2025-11-03
 heroImage: "/assets/glossary_hero.png"
 draft: false
 tags: [nlp, machine-learning, resources]
+aiUsage: human
 ---
 
 When I applied for my current role as a Data Scientist in the Clinical and Generative AI and NLP team at IDEXX, I knew that I was going to need to be as sharp as possible on NLP terms and techniques. To prepare for my technical interview, I wrote my own "Glossary" of NLP terms, complete with mathematical formulae and code snippets. My hope was that if someone asked me to code [`tf-idf`](/nlp-glossary#tf-idf) or explain [lemmatization](/nlp-glossary#lemmatization) in my technical interview, I'd be ready to impress.

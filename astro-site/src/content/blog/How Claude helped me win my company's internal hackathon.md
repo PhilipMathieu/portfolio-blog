@@ -5,6 +5,7 @@ pubDate: 2025-10-31
 heroImage: '/assets/claude.png'
 draft: false
 tags: [ai, hackathon, productivity]
+aiUsage: human
 ---
 
 This is my first entry into the canon of "How I Use AI" blog posts. I'm choosing a narrative style, which is in line with my personal preferences for writing and hopefully makes this post more engaging than a listicle, too. And before you ask, I typed every word of this post myself. I see little value in having AI write for me when I am trying to share my personal experience in my own voice.
