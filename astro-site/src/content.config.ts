@@ -18,7 +18,7 @@ const blog = defineCollection({
 			draft: z.boolean().default(false).optional(),
 			tags: z.array(z.string()).default([]).optional(),
 			// Indicate the level of AI involvement in writing this post
-			aiUsage: z.enum(['human', 'ai-assisted', 'ai-coauthored', 'ai-generated']).default('human').optional(),
+			aiUsage: z.enum(['human', 'co-authored', 'generative']).default('human').optional(),
 		}),
 });
 
