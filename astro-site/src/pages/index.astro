@@ -54,9 +54,11 @@ const posts = (await getCollection('blog'))
 										></div>
 									)}
 									<h4 class={index === 0 ? "title m-0 text-gray-800 leading-none text-[2.369rem] max-md:text-[1.563rem]" : "title m-0 text-gray-800 leading-none"}>{post.displayTitle}</h4>
-									<div class="flex justify-center mt-1 mb-1 max-md:justify-center">
-										<AIUsageBadge aiUsage={post.data.aiUsage} />
-									</div>
+									{post.data.aiUsage && post.data.aiUsage !== 'human' && (
+										<div class="flex justify-center mt-1 mb-1">
+											<AIUsageBadge aiUsage={post.data.aiUsage} />
+										</div>
+									)}
 									<p class="date m-0 text-gray-600">
 										<FormattedDate date={post.data.pubDate} />
 									</p>

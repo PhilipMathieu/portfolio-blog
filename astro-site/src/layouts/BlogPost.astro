@@ -50,9 +50,11 @@ const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '
 							}
 						</div>
 						<h1 class="mb-2">{displayTitle}</h1>
-						<div class="flex justify-center mt-2 mb-1">
-							<AIUsageBadge aiUsage={aiUsage} />
-						</div>
+						{aiUsage && aiUsage !== 'human' && (
+							<div class="flex justify-center mt-2 mb-1">
+								<AIUsageBadge aiUsage={aiUsage} />
+							</div>
+						)}
 						{!isAboutPage && (
 							<div class="share-container flex justify-center mt-4">
 								<ShareButton title={displayTitle} />
