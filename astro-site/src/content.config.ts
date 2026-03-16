@@ -17,6 +17,8 @@ const blog = defineCollection({
 			// Hide posts from production by marking them as drafts
 			draft: z.boolean().default(false).optional(),
 			tags: z.array(z.string()).default([]).optional(),
+			// Indicate the level of AI involvement in writing this post
+			aiUsage: z.enum(['human', 'co-authored', 'generative']).default('human').optional(),
 		}),
 });
 

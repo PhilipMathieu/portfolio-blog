@@ -1,0 +1,41 @@
+---
+export type AIUsage = 'human' | 'co-authored' | 'generative';
+
+interface Props {
+	aiUsage?: AIUsage;
+}
+
+const { aiUsage = 'human' } = Astro.props;
+
+const labels: Record<AIUsage, string> = {
+	'human': 'Human-authored',
+	'co-authored': 'AI Co-authored',
+	'generative': 'Generative',
+};
+
+const descriptions: Record<AIUsage, string> = {
+	'human': 'Written by the author, with minimal AI use (e.g. proofreading or workshopping).',
+	'co-authored': 'Substantial portions written by AI with close human involvement and editing.',
+	'generative': 'Most content written by AI with minimal human involvement (e.g. fact-checking).',
+};
+
+const colors: Record<AIUsage, { bg: string; text: string; border: string }> = {
+	'human': { bg: '#dcfce7', text: '#166534', border: '#86efac' },
+	'co-authored': { bg: '#fef9c3', text: '#854d0e', border: '#fde047' },
+	'generative': { bg: '#ffedd5', text: '#9a3412', border: '#fdba74' },
+};
+
+const label = labels[aiUsage];
+const description = descriptions[aiUsage];
+const color = colors[aiUsage];
+---
+
+{aiUsage !== 'human' && (
+	<span
+		class="ai-usage-badge inline-flex items-center gap-1 px-2 py-1 text-xs font-medium border rounded-full"
+		style={`background-color: ${color.bg}; color: ${color.text}; border-color: ${color.border};`}
+		title={description}
+	>
+		{label}
+	</span>
+)}

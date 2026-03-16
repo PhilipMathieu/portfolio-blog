@@ -8,11 +8,12 @@ import Header from '../components/Header.astro';
 import MermaidInit from '../components/MermaidInit.astro';
 import CopyButtonInit from '../components/CopyButtonInit.astro';
 import ShareButton from '../components/ShareButton.astro';
+import AIUsageBadge from '../components/AIUsageBadge.astro';
 import { generateGradient } from '../utils/gradient';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage, draft } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, draft, aiUsage } = Astro.props;
 const displayTitle = import.meta.env.DEV && draft 
     ? `[Draft] ${title}`
     : title;
@@ -49,6 +50,11 @@ const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '
 							}
 						</div>
 						<h1 class="mb-2">{displayTitle}</h1>
+						{aiUsage && aiUsage !== 'human' && (
+							<div class="flex justify-center mt-2 mb-1">
+								<AIUsageBadge aiUsage={aiUsage} />
+							</div>
+						)}
 						{!isAboutPage && (
 							<div class="share-container flex justify-center mt-4">
 								<ShareButton title={displayTitle} />
