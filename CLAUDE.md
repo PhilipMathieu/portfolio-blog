@@ -53,3 +53,7 @@ Custom color palette and typography defined in `styles/global.css`:
 - Fonts: Inter (body), Newsreader (headings)
 - Accent: `--color-primary-500: #CE112D`
 - Links: `--color-link-500: #1D9ACC`
+
+## Demo workflows for PR review
+
+When a PR adds a visual or behavioural change that needs to be **seen** in review, build a walkthrough with [showboat](https://github.com/simonw/showboat). Capture screenshots, post the rendered markdown as a PR comment (not as a committed `.md`). See [`docs/agent-tools/showboat.md`](docs/agent-tools/showboat.md) — covers installation, the `--single-process` chromium flag needed to run headless inside Claude Code's macOS sandbox, the route-interception script for screenshotting static builds, and the conventions for hosting images via `screenshots/pr-<n>/` + `raw.githubusercontent.com`.
