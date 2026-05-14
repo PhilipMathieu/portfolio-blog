@@ -264,4 +264,64 @@
 	.copy-button.copied {
 		@apply bg-primary-500 text-white;
 	}
+
+	/* --- Sidenotes (issue #26) ---
+	   GFM footnotes are lifted at build time by rehype-sidenotes into:
+	     <div class="sidenote-row">
+	       <p>... <sup><a data-footnote-ref>1</a></sup> ...</p>
+	       <div class="sidenote-stack">
+	         <aside class="sidenote" role="note">...</aside>
+	       </div>
+	     </div>
+	   On narrow screens sidenotes flow inline beneath the paragraph.
+	   At >=1280px they float into the right gutter via absolute positioning.
+	*/
+
+	.sidenote {
+		@apply text-sm leading-snug text-gray-500 font-sans;
+	}
+
+	.sidenote p {
+		@apply text-sm leading-snug text-gray-500 mb-2;
+	}
+
+	.sidenote p:last-child {
+		@apply mb-0;
+	}
+
+	.sidenote-number {
+		@apply text-xs font-sans font-semibold text-primary-500 mr-1 align-super;
+	}
+
+	.prose .sidenote a {
+		@apply text-link-500 underline;
+	}
+
+	/* Narrow viewport: sidenote-stack drops below the paragraph
+	   styled as a left-bordered aside group. */
+	.sidenote-stack {
+		@apply my-4 pl-4 border-l-2 border-gray-200 flex flex-col gap-3;
+	}
+
+	/* Wide viewport: float sidenotes into the right gutter.
+	   Requires the article container to provide ~272px of right
+	   breathing room (handled by widening main at xl). */
+	@media (min-width: 1280px) {
+		.sidenote-row {
+			position: relative;
+		}
+
+		.sidenote-stack {
+			@apply m-0 p-0 border-0 gap-4;
+			position: absolute;
+			top: 0;
+			left: calc(100% + 2rem);
+			width: 240px;
+		}
+
+		/* Highlight the referenced sidenote pair on hover for discoverability */
+		.sidenote-row:hover .sidenote-number {
+			@apply text-primary-600;
+		}
+	}
 }

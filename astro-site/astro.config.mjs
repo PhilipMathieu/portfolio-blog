@@ -9,6 +9,7 @@ import tailwindcss from '@tailwindcss/vite';
 import rehypeKatex from 'rehype-katex';
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkMath from 'remark-math';
+import { rehypeSidenotes } from './src/utils/rehype-sidenotes';
 // Mermaid handled client-side; no rehype plugin needed
 // Iframe handling is done client-side in BlogPost.astro
 
@@ -38,6 +39,7 @@ export default defineConfig({
           keepBackground: false,
         },
       ],
+      rehypeSidenotes,
     ],
   },
   image: {
