@@ -72,7 +72,7 @@ function buildSidenote(ref: Element, item: Element, sidenoteId: string): Element
 	const numberMark: ElementContent[] = [
 		{
 			type: 'element',
-			tagName: 'sup',
+			tagName: 'span',
 			properties: { className: ['sidenote-number'] },
 			children: [{ type: 'text', value: label }],
 		} as Element,

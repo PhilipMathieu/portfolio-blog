@@ -290,7 +290,7 @@
 	}
 
 	.sidenote-number {
-		@apply text-xs font-sans font-semibold text-primary-500 mr-1 align-super;
+		@apply font-sans font-semibold text-primary-500 mr-1;
 	}
 
 	.prose .sidenote a {
