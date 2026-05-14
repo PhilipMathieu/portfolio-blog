@@ -7,6 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import MermaidInit from '../components/MermaidInit.astro';
 import CopyButtonInit from '../components/CopyButtonInit.astro';
+import ShowboatInit from '../components/ShowboatInit.astro';
 import ShareButton from '../components/ShareButton.astro';
 import AIUsageBadge from '../components/AIUsageBadge.astro';
 import { generateGradient } from '../utils/gradient';
@@ -69,5 +70,6 @@ const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '
 		<Footer />
 		<MermaidInit />
 		<CopyButtonInit />
+		<ShowboatInit />
 	</body>
 </html>

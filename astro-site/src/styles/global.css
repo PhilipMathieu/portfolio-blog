@@ -264,4 +264,55 @@
 	.copy-button.copied {
 		@apply bg-primary-500 text-white;
 	}
+
+	/* ── Showboat sidenotes ─────────────────────────────────────────────────── */
+	/* On wide screens, footnotes float into the right margin as sidenotes.      */
+	/* On narrow screens they stay hidden (the footnotes section at the bottom   */
+	/* remains visible instead).                                                 */
+
+	@media (min-width: 1280px) {
+		.sidenote {
+			float: right;
+			clear: right;
+			/* Push the sidenote past the prose's right edge.
+			   prose=720px inside max-w-[1020px]; at 1280px viewport
+			   the available space to the right is enough to fit 220px. */
+			margin-right: -250px;
+			margin-top: 0.15rem;
+			margin-bottom: 1rem;
+			margin-left: 0;
+			width: 220px;
+			font-size: 0.78em;
+			line-height: 1.5;
+			color: var(--gray-500);
+			padding-left: 0.6rem;
+			border-left: 2px solid var(--gray-300);
+		}
+
+		.sidenote .sidenote-number {
+			color: var(--primary-500);
+			font-weight: 600;
+			font-size: 0.75em;
+			vertical-align: super;
+			margin-right: 0.2em;
+		}
+
+		.sidenote a {
+			color: var(--link-500);
+		}
+
+		/* Style the inline reference number */
+		sup:has([data-footnote-ref]),
+		sup [data-footnote-ref] {
+			color: var(--primary-500);
+			font-weight: 600;
+		}
+	}
+
+	/* Sidenotes are decorative-only; keep footnotes accessible on small screens */
+	@media (max-width: 1279px) {
+		.sidenote {
+			display: none;
+		}
+	}
 }
