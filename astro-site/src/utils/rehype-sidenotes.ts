@@ -62,12 +62,11 @@ function collectFootnoteItems(section: Element): Map<string, Element> {
 	return items;
 }
 
-function buildSidenote(ref: Element, item: Element): Element {
+function buildSidenote(ref: Element, item: Element, sidenoteId: string): Element {
 	const clone = cloneElement(item);
 	stripBackrefs(clone);
 
 	const refId = (ref.properties?.id as string) ?? '';
-	const targetId = ((ref.properties?.href as string) ?? '#').slice(1);
 	const label = textOf(ref).trim() || '*';
 
 	const numberMark: ElementContent[] = [
@@ -97,7 +96,7 @@ function buildSidenote(ref: Element, item: Element): Element {
 			role: 'note',
 			'aria-label': `Sidenote ${label}`,
 			'data-sidenote-for': refId,
-			id: `sidenote-${targetId}`,
+			id: sidenoteId,
 		},
 		children: asideChildren,
 	};
@@ -126,6 +125,7 @@ export function rehypeSidenotes() {
 
 		if (items.size === 0) return;
 
+		const consumed = new Set<string>();
 		const newChildren: ElementContent[] = [];
 		for (let i = 0; i < tree.children.length; i++) {
 			if (i === sectionIndex) continue;
@@ -146,9 +146,20 @@ export function rehypeSidenotes() {
 				.map((ref) => {
 					const href = (ref.properties?.href as string | undefined) ?? '';
 					if (!href.startsWith('#')) return null;
-					const item = items.get(href.slice(1));
+					const targetId = href.slice(1);
+					const item = items.get(targetId);
 					if (!item) return null;
-					return buildSidenote(ref, item);
+					consumed.add(targetId);
+
+					// Each ref gets a unique sidenote id derived from the ref's own id
+					// (GFM disambiguates repeated refs with suffixes like `-1-2`), and
+					// we rewrite the ref's href to point at the new aside so the
+					// superscript link still jumps somewhere.
+					const refId = (ref.properties?.id as string) ?? '';
+					const sidenoteId = refId ? `sidenote-${refId}` : `sidenote-${targetId}`;
+					ref.properties = { ...ref.properties, href: `#${sidenoteId}` };
+
+					return buildSidenote(ref, item, sidenoteId);
 				})
 				.filter((s): s is Element => s !== null);
 
@@ -172,6 +183,13 @@ export function rehypeSidenotes() {
 				],
 			};
 			newChildren.push(wrapper);
+		}
+
+		// If every footnote definition got lifted into a sidenote we can drop the
+		// original `<section data-footnotes>`. Otherwise keep it so any unreferenced
+		// definitions still appear on the page rather than silently disappearing.
+		if (sectionIndex >= 0 && consumed.size < items.size) {
+			newChildren.push(tree.children[sectionIndex]);
 		}
 
 		tree.children = newChildren;

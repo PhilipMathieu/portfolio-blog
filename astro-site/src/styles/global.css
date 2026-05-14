@@ -304,9 +304,13 @@
 	}
 
 	/* Wide viewport: float sidenotes into the right gutter.
-	   Requires the article container to provide ~272px of right
-	   breathing room (handled by widening main at xl). */
-	@media (min-width: 1280px) {
+	   Breakpoint matches the article container's max-width (set on
+	   BlogPost.astro): main hits its 1320px cap at this viewport,
+	   leaving ~300px of gutter on each side — enough for the 32px
+	   gap plus the 240px sidenote with a 28px buffer. Below this
+	   breakpoint main stays at 1020px and there isn't room for a
+	   gutter, so the stack stays inline. */
+	@media (min-width: 1320px) {
 		.sidenote-row {
 			position: relative;
 		}
