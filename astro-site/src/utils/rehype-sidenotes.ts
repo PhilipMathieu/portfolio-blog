@@ -70,6 +70,25 @@ function buildSidenote(ref: Element, item: Element): Element {
 	const targetId = ((ref.properties?.href as string) ?? '#').slice(1);
 	const label = textOf(ref).trim() || '*';
 
+	const numberMark: ElementContent[] = [
+		{
+			type: 'element',
+			tagName: 'sup',
+			properties: { className: ['sidenote-number'] },
+			children: [{ type: 'text', value: label }],
+		} as Element,
+		{ type: 'text', value: ' ' } as Text,
+	];
+
+	const children = (clone.children as ElementContent[]) ?? [];
+	const firstP = children.find(
+		(c): c is Element => c.type === 'element' && c.tagName === 'p',
+	);
+	if (firstP) {
+		firstP.children = [...numberMark, ...(firstP.children as ElementContent[])];
+	}
+	const asideChildren = firstP ? children : [...numberMark, ...children];
+
 	return {
 		type: 'element',
 		tagName: 'aside',
@@ -80,16 +99,7 @@ function buildSidenote(ref: Element, item: Element): Element {
 			'data-sidenote-for': refId,
 			id: `sidenote-${targetId}`,
 		},
-		children: [
-			{
-				type: 'element',
-				tagName: 'sup',
-				properties: { className: ['sidenote-number'] },
-				children: [{ type: 'text', value: label }],
-			} as Element,
-			{ type: 'text', value: ' ' } as Text,
-			...((clone.children as ElementContent[]) ?? []),
-		],
+		children: asideChildren,
 	};
 }
 
