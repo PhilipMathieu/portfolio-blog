@@ -9,15 +9,16 @@ import MermaidInit from '../components/MermaidInit.astro';
 import CopyButtonInit from '../components/CopyButtonInit.astro';
 import ShareButton from '../components/ShareButton.astro';
 import AIUsageBadge from '../components/AIUsageBadge.astro';
+import IframeEmbed from '../components/IframeEmbed.astro';
 import { generateGradient } from '../utils/gradient';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage, draft, aiUsage } = Astro.props;
-const displayTitle = import.meta.env.DEV && draft 
+const { title, description, pubDate, updatedDate, heroImage, heroIframe, draft, aiUsage } = Astro.props;
+const displayTitle = import.meta.env.DEV && draft
     ? `[Draft] ${title}`
     : title;
-const gradient = heroImage ? null : (title ? generateGradient(title) : null);
+const gradient = (heroImage || heroIframe) ? null : (title ? generateGradient(title) : null);
 const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '/about' || Astro.url.pathname === '/colophon/';
 ---
 
@@ -31,7 +32,9 @@ const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '
 		<main class="max-w-[1020px] min-[1320px]:max-w-[1320px] w-full mx-auto p-0">
 			<article>
 				<div class="hero-image w-full max-w-[1020px] mx-auto overflow-hidden relative">
-					{heroImage ? (
+					{heroIframe ? (
+						<IframeEmbed src={heroIframe} title={title} />
+					) : heroImage ? (
 						<img src={heroImage} alt="" class="block rounded-none border-2 border-black w-full h-auto max-h-[min(600px,60vh)] max-md:max-h-[300px]" />
 					) : gradient && (
 						<div class="gradient block rounded-none border-2 border-black w-full h-[min(510px,60vh)] bg-cover max-md:h-[250px]" style={{ background: gradient.background }}></div>

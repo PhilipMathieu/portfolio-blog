@@ -1,0 +1,328 @@
+---
+interface Props {
+  src: string;
+  title?: string;
+  aspectRatio?: string;
+  // Accept raw iframe HTML attributes when used as MDX component override
+  style?: string;
+  [key: string]: unknown;
+}
+
+const { src, title, aspectRatio, style } = Astro.props;
+
+function parseAspectRatio(s?: string): string {
+  if (!s) return '16/9';
+  const m = s.match(/aspect-ratio:\s*([^;,]+)/);
+  return m ? m[1].trim() : '16/9';
+}
+
+const ratio = aspectRatio ?? parseAspectRatio(style);
+const uid = Math.random().toString(36).slice(2, 9);
+const dialogId = `iframe-dialog-${uid}`;
+---
+
+<div class="iframe-embed not-prose" style={`aspect-ratio: ${ratio};`} data-uid={uid}>
+  <iframe
+    src={src}
+    title={title ?? "Embedded content"}
+    loading="lazy"
+    allowfullscreen
+    class="iframe-inner"
+  ></iframe>
+  <div class="iframe-loading-overlay" aria-hidden="true">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" stroke-opacity="0.2"></circle>
+      <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.75s" repeatCount="indefinite"/>
+      </path>
+    </svg>
+  </div>
+  <div class="iframe-toolbar" role="toolbar" aria-label="iframe controls">
+    <button
+      type="button"
+      class="iframe-btn iframe-expand-btn"
+      aria-label="Expand to fullscreen"
+      title="Expand"
+      data-dialog={dialogId}
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+    <a
+      href={src}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="iframe-btn"
+      aria-label="Open in new tab"
+      title="Open in new tab"
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" y1="14" x2="21" y2="3"></line>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<dialog id={dialogId} class="iframe-dialog">
+  <div class="iframe-dialog-inner">
+    <header class="iframe-dialog-header">
+      <span class="iframe-dialog-title" title={src}>{title ?? src}</span>
+      <div class="iframe-dialog-actions">
+        <a
+          href={src}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="iframe-btn"
+          aria-label="Open in new tab"
+          title="Open in new tab"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+        <button
+          type="button"
+          class="iframe-btn iframe-dialog-close"
+          aria-label="Close fullscreen"
+          title="Close (Esc)"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+    <div class="iframe-dialog-body">
+      <iframe
+        data-src={src}
+        title={title ?? "Embedded content"}
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll<HTMLElement>('.iframe-embed').forEach((embed) => {
+      const uid = embed.dataset.uid;
+      const expandBtn = embed.querySelector<HTMLButtonElement>('.iframe-expand-btn');
+      const dialogId = expandBtn?.dataset.dialog;
+      const dialog = dialogId ? document.getElementById(dialogId) as HTMLDialogElement | null : null;
+      if (!dialog) return;
+
+      const inlineFrame = embed.querySelector<HTMLIFrameElement>('.iframe-inner');
+      const loadingOverlay = embed.querySelector<HTMLElement>('.iframe-loading-overlay');
+      const closeBtn = dialog.querySelector<HTMLButtonElement>('.iframe-dialog-close');
+      const dialogFrame = dialog.querySelector<HTMLIFrameElement>('iframe[data-src]');
+
+      if (inlineFrame && loadingOverlay) {
+        inlineFrame.addEventListener('load', () => {
+          loadingOverlay.style.display = 'none';
+        });
+      }
+
+      expandBtn?.addEventListener('click', () => {
+        // Lazy-load the dialog iframe on first open
+        if (dialogFrame && !dialogFrame.src) {
+          dialogFrame.src = dialogFrame.dataset.src ?? '';
+        }
+        dialog.showModal();
+        document.body.style.overflow = 'hidden';
+      });
+
+      const closeDialog = () => {
+        dialog.close();
+        document.body.style.overflow = '';
+      };
+
+      closeBtn?.addEventListener('click', closeDialog);
+
+      // Close on backdrop click
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) closeDialog();
+      });
+
+      // Restore scroll if closed via Escape key
+      dialog.addEventListener('close', () => {
+        document.body.style.overflow = '';
+      });
+    });
+  });
+</script>
+
+<style>
+  .iframe-embed {
+    position: relative;
+    width: 100%;
+    border: 2px solid var(--color-gray-800, #1a1a1a);
+    background: var(--color-gray-200, #e5e5e5);
+    overflow: hidden;
+    /* Undo any prose margins */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .iframe-embed .iframe-inner {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  .iframe-loading-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-gray-200, #e5e5e5);
+    color: var(--color-gray-500, #666);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .iframe-toolbar {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.3rem;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .iframe-embed:hover .iframe-toolbar,
+  .iframe-embed:focus-within .iframe-toolbar {
+    opacity: 1;
+  }
+
+  /* Always show toolbar on touch devices */
+  @media (hover: none) {
+    .iframe-toolbar {
+      opacity: 1;
+    }
+  }
+
+  .iframe-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1.5px solid var(--color-gray-800, #1a1a1a);
+    color: var(--color-gray-800, #1a1a1a);
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1;
+    transition: background-color 0.1s ease;
+    flex-shrink: 0;
+  }
+
+  .iframe-btn:hover {
+    background: white;
+    color: var(--color-gray-800, #1a1a1a);
+    text-decoration: none;
+  }
+
+  /* Dialog fullscreen overlay */
+  .iframe-dialog {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: 100vw;
+    max-height: 100dvh;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+  }
+
+  .iframe-dialog[open] {
+    display: flex;
+  }
+
+  .iframe-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  .iframe-dialog-inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: #000;
+  }
+
+  .iframe-dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.75rem;
+    height: 2.75rem;
+    min-height: 2.75rem;
+    background: var(--color-gray-800, #1a1a1a);
+    color: var(--color-gray-100, #f7f7f7);
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+
+  .iframe-dialog-title {
+    font-family: var(--font-family-sans);
+    font-size: 0.8125rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    opacity: 0.75;
+  }
+
+  .iframe-dialog-actions {
+    display: flex;
+    gap: 0.3rem;
+    flex-shrink: 0;
+  }
+
+  .iframe-dialog .iframe-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: white;
+  }
+
+  .iframe-dialog .iframe-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+    color: white;
+  }
+
+  .iframe-dialog-body {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .iframe-dialog-body iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: white;
+    display: block;
+  }
+</style>

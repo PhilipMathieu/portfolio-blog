@@ -14,6 +14,7 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.string().optional(), // Absolute path from public/ folder, e.g. "/assets/image.png"
+			heroIframe: z.string().optional(), // URL to embed as hero instead of a static image
 			// Hide posts from production by marking them as drafts
 			draft: z.boolean().default(false).optional(),
 			tags: z.array(z.string()).default([]).optional(),
