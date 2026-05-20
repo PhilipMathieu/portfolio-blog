@@ -1,12 +1,13 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import IframeEmbed from '../../components/IframeEmbed.astro';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
 	// In production, exclude drafts. In dev mode, include all posts.
-	const filteredPosts = import.meta.env.DEV 
-		? posts 
+	const filteredPosts = import.meta.env.DEV
+		? posts
 		: posts.filter((post) => !post.data.draft);
 	return filteredPosts.map((post) => ({
 		params: { slug: post.id },
@@ -20,5 +21,5 @@ const { Content } = await render(post);
 ---
 
 <BlogPost {...post.data}>
-	<Content />
+	<Content components={{ iframe: IframeEmbed }} />
 </BlogPost>
