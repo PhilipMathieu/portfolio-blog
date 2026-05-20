@@ -33,7 +33,7 @@ const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '
 			<article>
 				<div class="hero-image w-full max-w-[1020px] mx-auto overflow-hidden relative">
 					{heroIframe ? (
-						<IframeEmbed src={heroIframe} title={title} />
+						<IframeEmbed src={heroIframe} title={title} thumbnail={heroImage} />
 					) : heroImage ? (
 						<img src={heroImage} alt="" class="block rounded-none border-2 border-black w-full h-auto max-h-[min(600px,60vh)] max-md:max-h-[300px]" />
 					) : gradient && (

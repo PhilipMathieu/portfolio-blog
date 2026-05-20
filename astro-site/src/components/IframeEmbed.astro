@@ -3,12 +3,13 @@ interface Props {
   src: string;
   title?: string;
   aspectRatio?: string;
+  thumbnail?: string; // static image shown on mobile instead of the live embed
   // Accept raw iframe HTML attributes when used as MDX component override
   style?: string;
   [key: string]: unknown;
 }
 
-const { src, title, aspectRatio, style } = Astro.props;
+const { src, title, aspectRatio, thumbnail, style } = Astro.props;
 
 function parseAspectRatio(s?: string): string {
   if (!s) return '16/9';
@@ -37,6 +38,24 @@ const dialogId = `iframe-dialog-${uid}`;
       </path>
     </svg>
   </div>
+  <div class="iframe-mobile-cover" aria-hidden="true">
+    {thumbnail && <img src={thumbnail} alt="" class="iframe-mobile-img" />}
+    <button
+      type="button"
+      class="iframe-mobile-expand"
+      data-dialog={dialogId}
+      aria-label="Open interactive content fullscreen"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+      Tap to expand
+    </button>
+  </div>
+
   <div class="iframe-toolbar" role="toolbar" aria-label="iframe controls">
     <button
       type="button"
@@ -124,6 +143,7 @@ const dialogId = `iframe-dialog-${uid}`;
       const loadingOverlay = embed.querySelector<HTMLElement>('.iframe-loading-overlay');
       const closeBtn = dialog.querySelector<HTMLButtonElement>('.iframe-dialog-close');
       const dialogFrame = dialog.querySelector<HTMLIFrameElement>('iframe[data-src]');
+      const mobileExpandBtn = embed.querySelector<HTMLButtonElement>('.iframe-mobile-expand');
 
       if (inlineFrame && loadingOverlay) {
         inlineFrame.addEventListener('load', () => {
@@ -131,14 +151,16 @@ const dialogId = `iframe-dialog-${uid}`;
         });
       }
 
-      expandBtn?.addEventListener('click', () => {
-        // Lazy-load the dialog iframe on first open
+      const openDialog = () => {
         if (dialogFrame && !dialogFrame.src) {
           dialogFrame.src = dialogFrame.dataset.src ?? '';
         }
         dialog.showModal();
         document.body.style.overflow = 'hidden';
-      });
+      };
+
+      expandBtn?.addEventListener('click', openDialog);
+      mobileExpandBtn?.addEventListener('click', openDialog);
 
       const closeDialog = () => {
         dialog.close();
@@ -324,5 +346,58 @@ const dialogId = `iframe-dialog-${uid}`;
     border: none;
     background: white;
     display: block;
+  }
+
+  /* Mobile thumbnail cover */
+  .iframe-mobile-cover {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-gray-200, #e5e5e5);
+    z-index: 2;
+  }
+
+  .iframe-mobile-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .iframe-mobile-expand {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.1rem;
+    background: rgba(255, 255, 255, 0.92);
+    border: 2px solid var(--color-gray-800, #1a1a1a);
+    color: var(--color-gray-800, #1a1a1a);
+    font-family: var(--font-family-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .iframe-mobile-expand:hover {
+    background: white;
+  }
+
+  @media (max-width: 768px) {
+    .iframe-inner,
+    .iframe-loading-overlay,
+    .iframe-toolbar {
+      display: none !important;
+    }
+
+    .iframe-mobile-cover {
+      display: flex;
+    }
   }
 </style>
