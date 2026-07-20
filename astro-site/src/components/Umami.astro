@@ -1,0 +1,22 @@
+---
+// Umami Cloud analytics. Renders nothing unless PUBLIC_UMAMI_WEBSITE_ID is set
+// (configure it in the Cloudflare Pages dashboard) and the build is production,
+// so dev servers and unconfigured builds send no data.
+// Umami automatically records utm_* query parameters on incoming pageviews,
+// which powers the UTM/referral reports in the dashboard.
+const websiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
+const domain = Astro.site ? new URL(Astro.site).hostname : undefined;
+const enabled = import.meta.env.PROD && websiteId;
+---
+
+{
+	enabled && (
+		<script
+			is:inline
+			defer
+			src="https://cloud.umami.is/script.js"
+			data-website-id={websiteId}
+			data-domains={domain}
+		/>
+	)
+}
