@@ -19,33 +19,37 @@ For those that aren't familiar, [GitHub Actions](https://github.com/features/act
 
 All of the core functionality is accomplished through the workflow file. Let's break it down:
 
-`name: Python Script
+```yaml
+name: Python Script
 
 on:
   schedule: 
   - cron: "0 10 * * *"
   workflow_dispatch:
-
-`
+```
 
 The first part of the script specifies when the workflow should run. This script runs every day at 10 UTC and also whenever the workflow is manually dispatched. (Other common options include running on pushes or pull requests.)
 
-`jobs:
+```yaml
+jobs:
   build-linux:
     runs-on: ubuntu-latest
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
       # added or changed files to the repository.
-      contents: write`
+      contents: write
+```
 
 The next section specifies how to run the job. There is a lot of flexibility here, but for our purposes all we need to do is tell it to use a Linux job runner with Ubuntu, and give it write access to our repo.
 
-`    steps:
+```yaml
+    steps:
     - uses: actions/checkout@v3
     - name: Update json
       run: python -B main.py
     # Commit all changed files back to the repository
-    - uses: stefanzweifel/git-auto-commit-action@v4`
+    - uses: stefanzweifel/git-auto-commit-action@v4
+```
 
 Here's the important part. We start with checkout (i.e. getting the content of the repo - that's not automatically in the working directory), then run the script. The last step commits the results to the repo.
 
