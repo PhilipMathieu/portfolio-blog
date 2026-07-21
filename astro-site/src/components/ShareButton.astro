@@ -21,9 +21,24 @@ const shareUrl = url || Astro.url.href;
 </button>
 
 <script>
+	// Tag shared links with UTM parameters so visits from them show up as
+	// share-button referrals in Umami. Leaves any existing utm_* params intact.
+	function withUtmParams(url: string, medium: string): string {
+		try {
+			const tagged = new URL(url, window.location.href);
+			if (!tagged.searchParams.has('utm_source')) {
+				tagged.searchParams.set('utm_source', 'share_button');
+				tagged.searchParams.set('utm_medium', medium);
+			}
+			return tagged.href;
+		} catch {
+			return url;
+		}
+	}
+
 	document.addEventListener('DOMContentLoaded', () => {
 		const shareButtons = document.querySelectorAll('.share-button');
-		
+
 		shareButtons.forEach((shareButton) => {
 			shareButton.addEventListener('click', async () => {
 				const shareUrl = shareButton.dataset.url || window.location.href;
@@ -34,7 +49,7 @@ const shareUrl = url || Astro.url.href;
 					try {
 						await navigator.share({
 							title: shareTitle,
-							url: shareUrl,
+							url: withUtmParams(shareUrl, 'web_share'),
 						});
 						return;
 					} catch (err) {
@@ -46,8 +61,9 @@ const shareUrl = url || Astro.url.href;
 				}
 
 				// Fallback to clipboard
+				const clipboardUrl = withUtmParams(shareUrl, 'clipboard');
 				try {
-					await navigator.clipboard.writeText(shareUrl);
+					await navigator.clipboard.writeText(clipboardUrl);
 					const shareText = shareButton.querySelector('.share-text');
 					const originalText = shareText?.textContent || 'Share';
 					if (shareText) {
@@ -60,7 +76,7 @@ const shareUrl = url || Astro.url.href;
 					console.error('Failed to copy to clipboard:', err);
 					// Fallback for older browsers
 					const textArea = document.createElement('textarea');
-					textArea.value = shareUrl;
+					textArea.value = clipboardUrl;
 					textArea.style.position = 'fixed';
 					textArea.style.opacity = '0';
 					document.body.appendChild(textArea);
