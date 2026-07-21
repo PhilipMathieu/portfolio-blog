@@ -3,13 +3,14 @@ interface Props {
   src: string;
   title?: string;
   aspectRatio?: string;
+  height?: string; // CSS height; sizes the frame directly instead of by aspect ratio
   thumbnail?: string; // static image shown on mobile instead of the live embed
   // Accept raw iframe HTML attributes when used as MDX component override
   style?: string;
   [key: string]: unknown;
 }
 
-const { src, title, aspectRatio, thumbnail, style } = Astro.props;
+const { src, title, aspectRatio, height, thumbnail, style } = Astro.props;
 
 function parseAspectRatio(s?: string): string {
   if (!s) return '16/9';
@@ -18,11 +19,12 @@ function parseAspectRatio(s?: string): string {
 }
 
 const ratio = aspectRatio ?? parseAspectRatio(style);
+const sizing = height ? `height: ${height};` : `aspect-ratio: ${ratio};`;
 const uid = Math.random().toString(36).slice(2, 9);
 const dialogId = `iframe-dialog-${uid}`;
 ---
 
-<div class="iframe-embed not-prose" style={`aspect-ratio: ${ratio};`} data-uid={uid}>
+<div class="iframe-embed not-prose" style={sizing} data-uid={uid}>
   <iframe
     src={src}
     title={title ?? "Embedded content"}
