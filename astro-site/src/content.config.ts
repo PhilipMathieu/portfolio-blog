@@ -15,7 +15,9 @@ const blog = defineCollection({
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.string().optional(), // Absolute path from public/ folder, e.g. "/assets/image.png"
 			heroIframe: z.string().optional(), // URL to embed as hero instead of a static image
-			heroLink: z.string().url().optional(), // External project URL the static hero image links to (ignored when heroIframe is set)
+			// External project URL the static hero image links to (ignored when heroIframe is set).
+			// http(s)-only: the value lands in an <a href>, so schemes like javascript: must not validate
+			heroLink: z.string().url().regex(/^https?:\/\//, 'heroLink must be an http(s) URL').optional(),
 			// URL of an external site (e.g. GitHub Pages) rendered as the body of the
 			// post: prose becomes a short intro, then the site fills the page below it
 			embedSite: z.string().url().optional(),
