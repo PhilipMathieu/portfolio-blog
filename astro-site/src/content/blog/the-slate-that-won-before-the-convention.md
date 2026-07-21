@@ -6,7 +6,6 @@ heroImage: '/assets/the-slate-that-won.png'
 embedSite: 'https://philipmathieu.github.io/rc-analysis-202607/'
 draft: false
 tags: ['elections', 'data-science', 'maine', 'ranked-choice-voting']
-aiUsage: 'co-authored'
 ---
 
 The following analysis digs into the organizing strategy that Troy Jackson used to leverage his
