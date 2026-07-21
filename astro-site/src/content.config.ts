@@ -16,6 +16,10 @@ const blog = defineCollection({
 			heroImage: z.string().optional(), // Absolute path from public/ folder, e.g. "/assets/image.png"
 			heroIframe: z.string().optional(), // URL to embed as hero instead of a static image
 			heroLink: z.string().url().optional(), // External project URL the static hero image links to (ignored when heroIframe is set)
+			// URL of an external site (e.g. GitHub Pages) rendered as the body of the
+			// post: prose becomes a short intro, then the site fills the page below it
+			embedSite: z.string().url().optional(),
+			embedHeight: z.string().optional(), // CSS height override for the embedSite frame
 			// Hide posts from production by marking them as drafts
 			draft: z.boolean().default(false).optional(),
 			tags: z.array(z.string()).default([]).optional(),

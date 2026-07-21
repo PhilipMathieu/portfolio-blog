@@ -14,11 +14,12 @@ import { generateGradient } from '../utils/gradient';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage, heroIframe, heroLink, draft, aiUsage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, heroIframe, heroLink, embedSite, embedHeight, draft, aiUsage } = Astro.props;
 const displayTitle = import.meta.env.DEV && draft
     ? `[Draft] ${title}`
     : title;
-const gradient = (heroImage || heroIframe) ? null : (title ? generateGradient(title) : null);
+// embedSite posts skip the hero entirely — the embedded site is the visual
+const gradient = (heroImage || heroIframe || embedSite) ? null : (title ? generateGradient(title) : null);
 const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '/about' || Astro.url.pathname === '/colophon/';
 ---
 
@@ -32,7 +33,7 @@ const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '
 		<main class="max-w-[1020px] min-[1320px]:max-w-[1320px] w-full mx-auto p-0">
 			<article>
 				<div class="hero-image w-full max-w-[1020px] mx-auto overflow-hidden relative">
-					{heroIframe ? (
+					{embedSite ? null : heroIframe ? (
 						<IframeEmbed src={heroIframe} title={title} thumbnail={heroImage} />
 					) : heroImage && heroLink ? (
 						<a href={heroLink} target="_blank" rel="noopener noreferrer" aria-label={`Visit the project site for ${title}`}>
@@ -71,6 +72,19 @@ const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '
 					</div>
 					<slot />
 				</div>
+				{embedSite && (
+					<div class="embed-site w-full max-w-[1020px] mx-auto px-4 pb-4">
+						<IframeEmbed
+							src={embedSite}
+							title={title}
+							thumbnail={heroImage}
+							height={embedHeight ?? 'min(calc(100dvh - 9rem), 900px)'}
+						/>
+						<p class="text-center text-sm text-gray-600 mt-2 mb-8">
+							This post is a live embed of <a href={embedSite} target="_blank" rel="noopener noreferrer">{new URL(embedSite).host + new URL(embedSite).pathname}</a>.
+						</p>
+					</div>
+				)}
 			</article>
 		</main>
 		<Footer />

@@ -4,6 +4,7 @@
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import { SITE_TITLE } from '../consts';
+import Umami from './Umami.astro';
 
 interface Props {
 	title: string;
@@ -37,6 +38,9 @@ const { title, description, image } = Astro.props;
 />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css" integrity="sha384-Zi52hHXOLjmD8g7sDwZ6GS8nKM8lKQKfU0e8nfY5h5nHy0nL/6nD8nP2VNVfwfnk" crossorigin="anonymous" />
 <meta name="generator" content={Astro.generator} />
+
+<!-- Analytics -->
+<Umami />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
