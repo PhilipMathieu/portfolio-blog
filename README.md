@@ -20,8 +20,6 @@ portfolio-blog/
 │   │   └── pages/       # Site pages
 │   ├── public/          # Static assets
 │   └── dist/            # Build output
-├── oldsite/             # Previous Next.js site (archived)
-├── migrations/          # Content migration tools
 └── docs/                # Documentation
 ```
 
@@ -152,7 +150,6 @@ $~$
 
 - [Astro Site Deployment Guide](./astro-site/DEPLOYMENT.md) - Detailed Cloudflare Pages setup
 - [Cloudflare Pages Quick Reference](./astro-site/CLOUDFLARE-PAGES.md) - Quick deployment settings
-- [Migration Guide](./migrations/README.md) - Content migration from Contentful
 
 $~$
 
@@ -165,10 +162,6 @@ $~$
 - **Content**: Markdown/MDX files in `src/content/blog/`
 - **Build**: Static site generation
 - **Deployment**: Cloudflare Pages
-
-### Legacy Site (oldsite)
-
-The previous Next.js site is archived in the `oldsite/` directory. See [NETLIFY-DISABLE.md](./NETLIFY-DISABLE.md) for information about disabling the old Netlify deployment.
 
 $~$
 

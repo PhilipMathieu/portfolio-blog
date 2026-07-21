@@ -168,7 +168,10 @@
 	pre code {
 		@apply bg-transparent p-0 text-sm;
 		display: block;
-		overflow-x: auto;
+		/* Wrap long lines instead of horizontal scrolling — the article column
+		   is narrow, so overflow-x scrollbars appeared on most code blocks */
+		white-space: pre-wrap;
+		overflow-wrap: break-word;
 	}
 
 	pre code .line {

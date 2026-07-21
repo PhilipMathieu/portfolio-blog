@@ -1,17 +1,12 @@
 ---
-import { readFile } from 'fs/promises';
-import { join } from 'path';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { parseGlossary } from '../utils/glossaryParser';
 import { render } from '../utils/markdownRenderer.js';
-
-// Read the glossary markdown file
-// In Astro, we need to resolve paths relative to the project root
-const projectRoot = process.cwd();
-const glossaryPath = join(projectRoot, 'src/content/pages/NLP Glossary.md');
-const glossaryContent = await readFile(glossaryPath, 'utf-8');
+// Inlined at build time via Vite — the Cloudflare adapter prerenders in
+// workerd, which has no fs access
+import glossaryContent from '../content/pages/NLP Glossary.md?raw';
 
 // Parse the glossary into terms
 const terms = parseGlossary(glossaryContent);

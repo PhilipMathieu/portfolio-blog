@@ -14,7 +14,7 @@ import { generateGradient } from '../utils/gradient';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage, heroIframe, draft, aiUsage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, heroIframe, heroLink, draft, aiUsage } = Astro.props;
 const displayTitle = import.meta.env.DEV && draft
     ? `[Draft] ${title}`
     : title;
@@ -34,6 +34,10 @@ const isAboutPage = Astro.url.pathname === '/about/' || Astro.url.pathname === '
 				<div class="hero-image w-full max-w-[1020px] mx-auto overflow-hidden relative">
 					{heroIframe ? (
 						<IframeEmbed src={heroIframe} title={title} thumbnail={heroImage} />
+					) : heroImage && heroLink ? (
+						<a href={heroLink} target="_blank" rel="noopener noreferrer" aria-label={`Visit the project site for ${title}`}>
+							<img src={heroImage} alt="" class="block rounded-none border-2 border-black w-full h-auto max-h-[min(600px,60vh)] max-md:max-h-[300px]" />
+						</a>
 					) : heroImage ? (
 						<img src={heroImage} alt="" class="block rounded-none border-2 border-black w-full h-auto max-h-[min(600px,60vh)] max-md:max-h-[300px]" />
 					) : gradient && (

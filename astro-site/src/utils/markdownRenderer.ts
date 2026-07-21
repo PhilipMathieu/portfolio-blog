@@ -6,6 +6,7 @@ import rehypeKatex from 'rehype-katex';
 import rehypeStringify from 'rehype-stringify';
 import remarkRehype from 'remark-rehype';
 import rehypePrettyCode from 'rehype-pretty-code';
+import { createHighlighter, createJavaScriptRegexEngine } from 'shiki';
 import { generateSlug } from './glossaryParser';
 
 /**
@@ -62,6 +63,11 @@ export async function render(content: string, allTerms: Array<{ id: string; titl
 		.use(rehypePrettyCode, {
 			theme: 'github-light',
 			keepBackground: false,
+			// This pipeline runs at prerender time inside the Cloudflare adapter's
+			// workerd sandbox, which forbids WASM compilation — use shiki's pure-JS
+			// regex engine instead of the default oniguruma WASM engine
+			getHighlighter: (options) =>
+				createHighlighter({ ...options, engine: createJavaScriptRegexEngine({ forgiving: true }) }),
 		})
 		.use(rehypeStringify, { allowDangerousHtml: true });
 	
