@@ -9,12 +9,13 @@ import Umami from './Umami.astro';
 interface Props {
 	title: string;
 	description: string;
-	image?: ImageMetadata;
+	image?: ImageMetadata | string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image } = Astro.props;
+const imageURL = image ? new URL(typeof image === 'string' ? image : image.src, Astro.site) : undefined;
 ---
 
 <!-- Global Metadata -->
@@ -55,11 +56,11 @@ const { title, description, image } = Astro.props;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-{image && <meta property="og:image" content={new URL(image.src, Astro.url)} />}
+{imageURL && <meta property="og:image" content={imageURL} />}
 
 <!-- Twitter -->
 <meta property="twitter:card" content={image ? "summary_large_image" : "summary"} />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-{image && <meta property="twitter:image" content={new URL(image.src, Astro.url)} />}
+{imageURL && <meta property="twitter:image" content={imageURL} />}
