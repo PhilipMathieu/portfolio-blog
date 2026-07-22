@@ -1,6 +1,5 @@
 // @ts-check
 
-import cloudflare from '@astrojs/cloudflare';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
@@ -16,7 +15,6 @@ import { rehypeSidenotes } from './src/utils/rehype-sidenotes';
 // https://astro.build/config
 export default defineConfig({
   output: 'static',
-  adapter: cloudflare(),
   site: 'https://philipmathieu.com',
   integrations: [
     mdx({}),
